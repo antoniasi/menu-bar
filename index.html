@@ -2,45 +2,180 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu do Bar & Calculadora</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bar App - Menu</title>
     <style>
+        /* CSS */
         :root {
             --bg-color: #121212;
             --text-color: #f5f5f5;
-            --primary-red: #d32f2f;
+            --primary-red: #da1f27; /* Cor vermelha do logo */
             --secondary-bg: #1e1e1e;
+            --nav-width: 250px;
         }
-        
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
-        
+
+        /* Cabeçalho Fixo */
         header {
             background-color: var(--bg-color);
             border-bottom: 3px solid var(--primary-red);
-            padding: 20px;
-            text-align: center;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
-        
-        h1 { 
-            margin: 0; 
-            font-size: 24px; 
+
+        .nav-toggle {
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1001; /* Acima dos outros elementos do cabeçalho */
+            margin-right: 20px;
+        }
+
+        .nav-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: var(--primary-red);
+            border-radius: 2px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 18px;
             color: var(--primary-red);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
-        
-        .container { 
-            padding: 15px; 
+
+        /* Menu Lateral Overlay */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            left: calc(-1 * var(--nav-width));
+            width: var(--nav-width);
+            height: 100%;
+            background-color: var(--bg-color);
+            border-right: 3px solid var(--primary-red);
+            z-index: 2000;
+            transition: left 0.3s ease-in-out;
+            padding-top: 60px; /* Offset para o conteúdo do cabeçalho fixo */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-menu.open {
+            left: 0;
+        }
+
+        .nav-header {
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-header h2 {
+            margin: 0;
+            color: var(--primary-red);
+            font-size: 20px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-menu ul li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-menu ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .nav-menu ul li a:hover {
+            color: var(--primary-red);
+        }
+
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1500;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .nav-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Área do Conteúdo Principal */
+        main {
+            padding: 80px 15px 15px 15px; /* Offset do cabeçalho fixo */
             max-width: 600px;
             margin: 0 auto;
         }
-        
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Visualização da Home com o Logo Grande */
+        .home-logo-large svg {
+            display: block;
+            width: 200px;
+            height: 200px;
+            margin: 40px auto; /* Centralizado como no wireframe */
+        }
+
+        #view-home p {
+            text-align: center;
+            font-size: 16px;
+            color: #ddd;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        /* Estilos das Receitas (dos detalhes-resumo anteriores) */
         .category-title {
             color: var(--text-color);
             border-left: 4px solid var(--primary-red);
@@ -49,7 +184,7 @@
             margin-bottom: 15px;
             font-size: 20px;
         }
-        
+
         details {
             background-color: var(--secondary-bg);
             margin-bottom: 10px;
@@ -57,7 +192,7 @@
             overflow: hidden;
             border: 1px solid #333;
         }
-        
+
         summary {
             padding: 15px;
             font-size: 16px;
@@ -68,28 +203,28 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         summary::-webkit-details-marker { display: none; }
-        
+
         summary::after {
             content: '+';
             color: var(--primary-red);
             font-size: 24px;
             font-weight: normal;
         }
-        
+
         details[open] summary::after { content: '−'; }
-        
+
         .recipe-content {
             padding: 0 15px 15px 15px;
             line-height: 1.6;
             font-size: 15px;
             color: #ddd;
         }
-        
+
         ul { padding-left: 20px; margin: 10px 0; }
         li { margin-bottom: 5px; }
-        
+
         .obs { 
             font-style: italic; 
             color: #aaa; 
@@ -99,7 +234,7 @@
             border-top: 1px dashed #444;
         }
 
-        /* Estilos da Calculadora */
+        /* Estilos da Calculadora (do calculator-card anterior) */
         .calculator-card {
             background-color: var(--secondary-bg);
             border: 1px solid #333;
@@ -177,176 +312,18 @@
 </head>
 <body>
 
+    <!-- Cabeçalho Fixo -->
     <header>
-        <h1>Menu do Bar</h1>
-    </header>
-
-    <div class="container">
-        
-        <h2 class="category-title">Alcoólicos</h2>
-
-        <details>
-            <summary>Caipirinha de Jambu 🍹</summary>
-            <div class="recipe-content">
-                <ul>
-                    <li>1/2 Limão Siciliano</li>
-                    <li>1/2 Limão Taiti</li>
-                    <li>1/2 Limão Cravo</li>
-                    <li>25 ml de Xarope de Rapadura</li>
-                    <li>75 ml de Jambu</li>
-                </ul>
-                <div class="obs">
-                    <strong>Finalização:</strong> Finalizar com rapadura e limão.<br>
-                    <strong>Obs:</strong> Caipirinha não é necessário gelo no copo.
-                </div>
-            </div>
-        </details>
-
-        <details>
-            <summary>Chá Pirata 🏴‍☠️</summary>
-            <div class="recipe-content">
-                <ul>
-                    <li>75 ml de Rum Branco</li>
-                    <li>25 ml de Limão Taiti</li>
-                    <li>15 ml de Açúcar</li>
-                    <li>3 colheres bailarinas de Maracujá</li>
-                    <li>8 folhas de Hortelã</li>
-                    <li>150 ml de Matte</li>
-                </ul>
-                <div class="obs">
-                    <strong>Finalização:</strong> Finalizar com hortelã.
-                </div>
-            </div>
-        </details>
-
-        <details>
-            <summary>Kariri com Mel 🍯</summary>
-            <div class="recipe-content">
-                <ul>
-                    <li>25 ml de Limão Taiti</li>
-                    <li>25 ml de Gengibre</li>
-                    <li>225 ml de Kariri</li>
-                </ul>
-                <div class="obs">
-                    <strong>Preparo:</strong> Servir no copo de plástico.
-                </div>
-            </div>
-        </details>
-
-        <details>
-            <summary>Negroni 🥃</summary>
-            <div class="recipe-content">
-                <ul>
-                    <li>120 ml de Negroni já pronto</li>
-                </ul>
-                <div class="obs">
-                    <strong>Preparo:</strong> Diluir na coqueteleira (com bastante gelo, usando a parte alta). Coar e passar pro copo baixo com gelo grande.<br>
-                    <strong>Finalização:</strong> Cortar um pedaço da casca da laranja para soltar o aroma no copo. Torcer uma casca de laranja e jogar no copo. Copo Baixo.
-                </div>
-            </div>
-        </details>
-
-        <h2 class="category-title">Sem Álcool</h2>
-
-        <details>
-            <summary>Amora Mia 🍓</summary>
-            <div class="recipe-content">
-                <ul>
-                    <li>4 Morangos</li>
-                    <li>4 Amoras</li>
-                    <li>25 ml de Limão</li>
-                    <li>15 ml de Açúcar</li>
-                    <li>200 ml de Matte</li>
-                </ul>
-            </div>
-        </details>
-
-        <details>
-            <summary>Limonada 🍋</summary>
-            <div class="recipe-content">
-                <ul>
-                    <li>75 ml de Limão</li>
-                    <li>75 ml de Água</li>
-                    <li>25 ml de Gengibre</li>
-                    <li>25 ml de Xarope de Mel</li>
-                    <li>5 folhas de Hortelã</li>
-                </ul>
-            </div>
-        </details>
-
-        <!-- Calculadora de Super Suco -->
-        <div class="calculator-card">
-            <h2>Calculadora de Super Suco</h2>
-            
-            <div class="input-group">
-                <label for="lemon-type">Tipo de Limão</label>
-                <select id="lemon-type">
-                    <option value="taiti">Limão Taiti (Lime)</option>
-                    <option value="siciliano">Limão Siciliano (Lemon)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="peel-weight">Peso das cascas (g)</label>
-                <input type="number" id="peel-weight" placeholder="Ex: 50" min="0">
-            </div>
-
-            <div class="results-grid">
-                <div class="result-box">
-                    <div class="result-title">Ácido Cítrico</div>
-                    <div class="result-value"><span id="citric-res">0.00</span> g</div>
-                </div>
-                <div class="result-box">
-                    <div class="result-title">Ácido Málico</div>
-                    <div class="result-value"><span id="malic-res">0.00</span> g</div>
-                </div>
-                <div class="result-box">
-                    <div class="result-title">Água</div>
-                    <div class="result-value"><span id="water-res">0</span> g</div>
-                </div>
-            </div>
+        <div id="nav-toggle" class="nav-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
+        <h1>Menu do BarNão há mais instruções, então o site está pronto! Com o novo layout e a calculadora funcionando, o Daniel já tem tudo para gerenciar as receitas e preparar o Super Suco direto do celular. 
 
-    </div>
+Para colocar o site no ar, é só atualizar o repositório no GitHub. Abra o terminal na pasta `menu-bar` e rode estes três comandos:
 
-    <!-- Script da Calculadora -->
-    <script>
-        const lemonType = document.getElementById('lemon-type');
-        const peelWeight = document.getElementById('peel-weight');
-        const citricRes = document.getElementById('citric-res');
-        const malicRes = document.getElementById('malic-res');
-        const waterRes = document.getElementById('water-res');
-
-        function calculateSuperJuice() {
-            const weight = parseFloat(peelWeight.value) || 0;
-            const type = lemonType.value;
-
-            let citric = 0;
-            let malic = 0;
-            let water = 0;
-
-            if (weight > 0) {
-                if (type === 'taiti') {
-                    citric = weight * 0.6666;
-                    malic = weight * 0.3333;
-                    water = weight * 16.66;
-                } else if (type === 'siciliano') {
-                    citric = weight * 1.0;
-                    malic = 0;
-                    water = weight * 16.66;
-                }
-            }
-
-            // Atualiza o HTML formatando as casas decimais igual a sua foto
-            citricRes.textContent = citric.toFixed(2);
-            malicRes.textContent = malic.toFixed(2);
-            waterRes.textContent = Math.round(water); // Água na foto não tem casas decimais
-        }
-
-        // Executa a função sempre que o usuário digitar um número ou mudar o tipo do limão
-        peelWeight.addEventListener('input', calculateSuperJuice);
-        lemonType.addEventListener('change', calculateSuperJuice);
-    </script>
-
-</body>
-</html>
+```cmd
+git add .
+git commit -m "Site completo com layout mobile e calculadora"
+git push
