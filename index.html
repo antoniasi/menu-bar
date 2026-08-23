@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bar App - Menu</title>
+    <title>Menu do Bar</title>
     <style>
-        /* CSS */
         :root {
             --bg-color: #121212;
             --text-color: #f5f5f5;
-            --primary-red: #da1f27; /* Cor vermelha do logo */
+            --primary-red: #ff0000;
             --secondary-bg: #1e1e1e;
             --nav-width: 250px;
         }
@@ -23,13 +22,12 @@
             overflow-x: hidden;
         }
 
-        /* Cabeçalho Fixo */
+        /* --- CABEÇALHO FIXO --- */
         header {
             background-color: var(--bg-color);
             border-bottom: 3px solid var(--primary-red);
-            padding: 10px 20px;
+            padding: 15px 20px;
             display: flex;
-            justify-content: flex-start;
             align-items: center;
             position: fixed;
             top: 0;
@@ -40,12 +38,11 @@
 
         .nav-toggle {
             width: 30px;
-            height: 25px;
+            height: 22px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 1001; /* Acima dos outros elementos do cabeçalho */
             margin-right: 20px;
         }
 
@@ -65,68 +62,73 @@
             letter-spacing: 1px;
         }
 
-        /* Menu Lateral Overlay */
-        .nav-menu {
+        /* --- MENU LATERAL (SIDEBAR) --- */
+        .sidebar {
             position: fixed;
             top: 0;
             left: calc(-1 * var(--nav-width));
             width: var(--nav-width);
             height: 100%;
-            background-color: var(--bg-color);
-            border-right: 3px solid var(--primary-red);
+            background-color: var(--secondary-bg);
+            border-right: 2px solid var(--primary-red);
             z-index: 2000;
-            transition: left 0.3s ease-in-out;
-            padding-top: 60px; /* Offset para o conteúdo do cabeçalho fixo */
-            box-sizing: border-box;
+            transition: left 0.3s ease;
             display: flex;
             flex-direction: column;
         }
 
-        .nav-menu.open {
+        .sidebar.open {
             left: 0;
         }
 
-        .nav-header {
+        .sidebar-header {
             padding: 20px;
             border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .nav-header h2 {
+        .sidebar-header h2 {
             margin: 0;
             color: var(--primary-red);
-            font-size: 20px;
+            font-size: 18px;
             text-transform: uppercase;
-            text-align: center;
         }
 
-        .nav-menu ul {
+        .close-btn {
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .sidebar ul {
             list-style: none;
             padding: 0;
             margin: 0;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
         }
 
-        .nav-menu ul li {
-            padding: 15px 20px;
+        .sidebar ul li {
             border-bottom: 1px solid #333;
         }
 
-        .nav-menu ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
+        .sidebar ul li a {
             display: block;
+            padding: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
             text-transform: uppercase;
+            font-weight: bold;
         }
 
-        .nav-menu ul li a:hover {
-            color: var(--primary-red);
+        .sidebar ul li a:active {
+            background-color: #333;
         }
 
-        .nav-overlay {
+        /* Fundo escuro quando o menu abre */
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -134,19 +136,19 @@
             height: 100%;
             background-color: rgba(0,0,0,0.7);
             z-index: 1500;
+            display: none;
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            transition: opacity 0.3s ease;
         }
-
-        .nav-overlay.open {
+        
+        .overlay.active {
+            display: block;
             opacity: 1;
-            visibility: visible;
         }
 
-        /* Área do Conteúdo Principal */
+        /* --- CONTEÚDO PRINCIPAL --- */
         main {
-            padding: 80px 15px 15px 15px; /* Offset do cabeçalho fixo */
+            padding: 80px 15px 20px 15px; /* Espaço pro cabeçalho não cobrir nada */
             max-width: 600px;
             margin: 0 auto;
         }
@@ -157,34 +159,38 @@
 
         .view.active {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
 
-        /* Visualização da Home com o Logo Grande */
-        .home-logo-large svg {
-            display: block;
-            width: 200px;
-            height: 200px;
-            margin: 40px auto; /* Centralizado como no wireframe */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        #view-home p {
-            text-align: center;
-            font-size: 16px;
-            color: #ddd;
-            line-height: 1.6;
-            margin-top: 20px;
+        /* --- TELA INICIAL (LOGO) --- */
+        .home-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
         }
 
-        /* Estilos das Receitas (dos detalhes-resumo anteriores) */
+        .logo-svg {
+            width: 250px;
+            height: 250px;
+        }
+
+        /* --- RECEITAS --- */
         .category-title {
             color: var(--text-color);
             border-left: 4px solid var(--primary-red);
             padding-left: 10px;
-            margin-top: 30px;
+            margin-top: 20px;
             margin-bottom: 15px;
             font-size: 20px;
         }
-
+        
         details {
             background-color: var(--secondary-bg);
             margin-bottom: 10px;
@@ -192,7 +198,7 @@
             overflow: hidden;
             border: 1px solid #333;
         }
-
+        
         summary {
             padding: 15px;
             font-size: 16px;
@@ -203,28 +209,21 @@
             justify-content: space-between;
             align-items: center;
         }
-
+        
         summary::-webkit-details-marker { display: none; }
-
-        summary::after {
-            content: '+';
-            color: var(--primary-red);
-            font-size: 24px;
-            font-weight: normal;
-        }
-
+        summary::after { content: '+'; color: var(--primary-red); font-size: 24px; }
         details[open] summary::after { content: '−'; }
-
+        
         .recipe-content {
             padding: 0 15px 15px 15px;
             line-height: 1.6;
             font-size: 15px;
             color: #ddd;
         }
-
+        
         ul { padding-left: 20px; margin: 10px 0; }
         li { margin-bottom: 5px; }
-
+        
         .obs { 
             font-style: italic; 
             color: #aaa; 
@@ -234,96 +233,250 @@
             border-top: 1px dashed #444;
         }
 
-        /* Estilos da Calculadora (do calculator-card anterior) */
+        /* --- CALCULADORA --- */
         .calculator-card {
             background-color: var(--secondary-bg);
             border: 1px solid #333;
             border-radius: 8px;
             padding: 20px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
-        .calculator-card h2 {
-            color: var(--primary-red);
-            margin-top: 0;
-            font-size: 18px;
-            text-transform: uppercase;
-            text-align: center;
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-            color: #aaa;
-        }
-
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #aaa; }
         .input-group select, .input-group input {
-            width: 100%;
-            padding: 12px;
-            background-color: #121212;
-            border: 1px solid #444;
-            color: white;
-            border-radius: 6px;
-            font-size: 16px;
-            box-sizing: border-box;
+            width: 100%; padding: 12px; background-color: #121212; border: 1px solid #444;
+            color: white; border-radius: 6px; font-size: 16px; box-sizing: border-box;
         }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--primary-red); }
 
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: var(--primary-red);
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .result-box {
-            background-color: #121212;
-            border-left: 4px solid var(--primary-red);
-            padding: 15px;
-            border-radius: 4px;
-        }
-
-        .result-title {
-            font-size: 14px;
-            color: #aaa;
-            margin-bottom: 5px;
-        }
-
-        .result-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-        }
+        .results-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 25px; }
+        .result-box { background-color: #121212; border-left: 4px solid var(--primary-red); padding: 15px; border-radius: 4px; }
+        .result-title { font-size: 14px; color: #aaa; margin-bottom: 5px; }
+        .result-value { font-size: 24px; font-weight: bold; color: white; }
     </style>
 </head>
 <body>
 
-    <!-- Cabeçalho Fixo -->
+    <!-- CABEÇALHO -->
     <header>
-        <div id="nav-toggle" class="nav-toggle" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="nav-toggle" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
         </div>
-        <h1>Menu do BarNão há mais instruções, então o site está pronto! Com o novo layout e a calculadora funcionando, o Daniel já tem tudo para gerenciar as receitas e preparar o Super Suco direto do celular. 
+        <h1>Menu do Bar</h1>
+    </header>
 
-Para colocar o site no ar, é só atualizar o repositório no GitHub. Abra o terminal na pasta `menu-bar` e rode estes três comandos:
+    <!-- MENU LATERAL -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+            <span class="close-btn" onclick="toggleMenu()">×</span>
+        </div>
+        <ul>
+            <li><a href="#" onclick="changeView('home')">Início</a></li>
+            <li><a href="#" onclick="changeView('recipes')">Receitas</a></li>
+            <li><a href="#" onclick="changeView('calculator')">Calc. Super Suco</a></li>
+        </ul>
+    </div>
+    
+    <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-```cmd
-git add .
-git commit -m "Site completo com layout mobile e calculadora"
-git push
+    <!-- ÁREA PRINCIPAL -->
+    <main>
+        
+        <!-- TELA INICIAL (LOGO) -->
+        <div id="view-home" class="view active">
+            <div class="home-container">
+                <!-- SVG DO LOGO DESENHADO EM CÓDIGO -->
+                <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Fundo Vermelho -->
+                    <circle cx="50" cy="50" r="48" fill="#ff0000" />
+                    <!-- Base da lâmpada (linhas pretas) -->
+                    <rect x="40" y="75" width="20" height="4" fill="#000" />
+                    <rect x="42" y="81" width="16" height="3" fill="#000" />
+                    <rect x="45" y="86" width="10" height="4" fill="#000" />
+                    <!-- Contorno de vidro da lâmpada (preto grosso) -->
+                    <path d="M 38 65 C 38 70, 42 74, 42 74 L 58 74 C 58 74, 62 70, 62 65 C 62 50, 75 45, 75 30 C 75 15, 60 5, 50 5 C 40 5, 25 15, 25 30 C 25 45, 38 50, 38 65 Z" fill="none" stroke="#000" stroke-width="6" />
+                    <!-- Raio branco no centro -->
+                    <path d="M 54 15 L 42 45 L 50 45 L 46 68 L 66 38 L 54 38 Z" fill="#fff" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- ABA DE RECEITAS -->
+        <div id="view-recipes" class="view">
+            <h2 class="category-title">Alcoólicos</h2>
+            <details>
+                <summary>Caipirinha de Jambu 🍹</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>1/2 Limão Siciliano</li>
+                        <li>1/2 Limão Taiti</li>
+                        <li>1/2 Limão Cravo</li>
+                        <li>25 ml de Xarope de Rapadura</li>
+                        <li>75 ml de Jambu</li>
+                    </ul>
+                    <div class="obs">
+                        <strong>Finalização:</strong> Finalizar com rapadura e limão.<br>
+                        <strong>Obs:</strong> Caipirinha não é necessário gelo no copo.
+                    </div>
+                </div>
+            </details>
+            <details>
+                <summary>Chá Pirata 🏴‍☠️</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>75 ml de Rum Branco</li>
+                        <li>25 ml de Limão Taiti</li>
+                        <li>15 ml de Açúcar</li>
+                        <li>3 colheres bailarinas de Maracujá</li>
+                        <li>8 folhas de Hortelã</li>
+                        <li>150 ml de Matte</li>
+                    </ul>
+                    <div class="obs">
+                        <strong>Finalização:</strong> Finalizar com hortelã.
+                    </div>
+                </div>
+            </details>
+            <details>
+                <summary>Kariri com Mel 🍯</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>25 ml de Limão Taiti</li>
+                        <li>25 ml de Gengibre</li>
+                        <li>225 ml de Kariri</li>
+                    </ul>
+                    <div class="obs">
+                        <strong>Preparo:</strong> Servir no copo de plástico.
+                    </div>
+                </div>
+            </details>
+            <details>
+                <summary>Negroni 🥃</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>120 ml de Negroni já pronto</li>
+                    </ul>
+                    <div class="obs">
+                        <strong>Preparo:</strong> Diluir na coqueteleira (com bastante gelo usando a parte alta). Coar e passar pro copo baixo com gelo grande.<br>
+                        <strong>Finalização:</strong> Cortar e torcer um pedaço da casca da laranja para soltar o aroma e jogar no copo.
+                    </div>
+                </div>
+            </details>
+
+            <h2 class="category-title">Sem Álcool</h2>
+            <details>
+                <summary>Amora Mia 🍓</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>4 Morangos</li>
+                        <li>4 Amoras</li>
+                        <li>25 ml de Limão</li>
+                        <li>15 ml de Açúcar</li>
+                        <li>200 ml de Matte</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>Limonada 🍋</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>75 ml de Limão</li>
+                        <li>75 ml de Água</li>
+                        <li>25 ml de Gengibre</li>
+                        <li>25 ml de Xarope de Mel</li>
+                        <li>5 folhas de Hortelã</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- ABA DE CALCULADORA -->
+        <div id="view-calculator" class="view">
+            <div class="calculator-card">
+                <div class="input-group">
+                    <label for="lemon-type">Tipo de Limão</label>
+                    <select id="lemon-type">
+                        <option value="taiti">Limão Taiti (Lime)</option>
+                        <option value="siciliano">Limão Siciliano (Lemon)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="peel-weight">Peso das cascas (g)</label>
+                    <input type="number" id="peel-weight" placeholder="Ex: 50" min="0">
+                </div>
+                <div class="results-grid">
+                    <div class="result-box">
+                        <div class="result-title">Ácido Cítrico</div>
+                        <div class="result-value"><span id="citric-res">0.00</span> g</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="result-title">Ácido Málico</div>
+                        <div class="result-value"><span id="malic-res">0.00</span> g</div>
+                    </div>
+                    <div class="result-box">
+                        <div class="result-title">Água</div>
+                        <div class="result-value"><span id="water-res">0</span> g</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SCRIPTS (LOGICA DE NAVEGAÇÃO E MATEMÁTICA) -->
+    <script>
+        // Função para abrir/fechar menu lateral
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        // Função para trocar de abas
+        function changeView(viewId) {
+            // Esconde todas as views
+            document.querySelectorAll('.view').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            // Mostra a selecionada
+            document.getElementById('view-' + viewId).classList.add('active');
+            // Fecha o menu lateral
+            toggleMenu();
+        }
+
+        // Lógica da Calculadora de Super Suco
+        const lemonType = document.getElementById('lemon-type');
+        const peelWeight = document.getElementById('peel-weight');
+        const citricRes = document.getElementById('citric-res');
+        const malicRes = document.getElementById('malic-res');
+        const waterRes = document.getElementById('water-res');
+
+        function calculateSuperJuice() {
+            const weight = parseFloat(peelWeight.value) || 0;
+            const type = lemonType.value;
+
+            let citric = 0;
+            let malic = 0;
+            let water = 0;
+
+            if (weight > 0) {
+                if (type === 'taiti') {
+                    citric = weight * 0.6666;
+                    malic = weight * 0.3333;
+                    water = weight * 16.66;
+                } else if (type === 'siciliano') {
+                    citric = weight * 1.0;
+                    malic = 0;
+                    water = weight * 16.66;
+                }
+            }
+
+            citricRes.textContent = citric.toFixed(2);
+            malicRes.textContent = malic.toFixed(2);
+            waterRes.textContent = Math.round(water);
+        }
+
+        peelWeight.addEventListener('input', calculateSuperJuice);
+        lemonType.addEventListener('change', calculateSuperJuice);
+    </script>
+</body>
+</html>
