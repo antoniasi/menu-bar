@@ -549,7 +549,7 @@
                 <div class="input-group">
                     <label for="batch-drink">Drink Base</label>
                     <select id="batch-drink">
-                        <option value="cynar_cachaca">Cynar + Cachaça + Mel</option>
+                        <option value="cynar_cachaca">Cynar Sour</option>
                     </select>
                 </div>
 
@@ -650,18 +650,51 @@
 
     <!-- SCRIPTS -->
     <script>
+        // Função para abrir/fechar menu lateral
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('active');
         }
 
+        // Função para trocar de abas
         function changeView(viewId) {
             document.querySelectorAll('.view').forEach(function(el) {
                 el.classList.remove('active');
             });
             document.getElementById('view-' + viewId).classList.add('active');
-            toggleMenu();
+            
+            // Se o menu estiver aberto, fecha ao trocar de tela
+            if (document.getElementById('sidebar').classList.contains('open')) {
+                toggleMenu();
+            }
         }
+
+        // --- Lógica de Swipe para o menu lateral ---
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        function handleGesture() {
+            const sidebar = document.getElementById('sidebar');
+            const isOpen = sidebar.classList.contains('open');
+            
+            // Deslize para a direita a partir da borda esquerda (abrir menu)
+            if (touchendX > touchstartX + 50 && touchstartX < 30 && !isOpen) {
+                toggleMenu();
+            }
+            // Deslize para a esquerda (fechar menu)
+            if (touchendX < touchstartX - 50 && isOpen) {
+                toggleMenu();
+            }
+        }
+
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleGesture();
+        });
 
         // --- Super Suco ---
         const lemonType = document.getElementById('lemon-type');
@@ -714,7 +747,7 @@
         batchVolume.addEventListener('input', calculateBatch);
         batchDrink.addEventListener('change', calculateBatch);
 
-        // --- Estoque / Lista de Compras ---
+        // --- Estoque / Lista de Compras (Ordem Alfabética Automática) ---
         const items = [
             "Gelo", "Água", "Água com gás", "Refrigerante", "Red Bull", 
             "Molho de romã", "Hibisco", "Maracujá", "Rum", "Kariri", 
@@ -723,6 +756,9 @@
             "Limão", "Açúcar", "Rapadura", "Interfolha", 
             "Guardanapo", "Palito de kariri", "Gabriela", "Copo de dose"
         ];
+
+        // Ordena os itens alfabeticamente usando a regra do português do Brasil
+        items.sort((a, b) => a.localeCompare(b, 'pt-BR'));
 
         const checklistContainer = document.getElementById('checklist');
 
