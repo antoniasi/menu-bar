@@ -257,7 +257,7 @@
             border-top: 1px dashed #444;
         }
 
-        /* --- ESTILOS DE CALCULADORAS (USADOS EM 2 ABAS) --- */
+        /* --- ESTILOS DE CALCULADORAS --- */
         .calculator-card {
             background-color: var(--secondary-bg);
             border: 1px solid #333;
@@ -290,7 +290,7 @@
         .result-title { font-size: 14px; color: #aaa; margin-bottom: 5px; }
         .result-value { font-size: 24px; font-weight: bold; color: white; }
 
-        /* --- LISTA DE COMPRAS --- */
+        /* --- ESTOQUE E LISTA DE COMPRAS --- */
         .page-header {
             text-align: center;
             margin-bottom: 20px;
@@ -303,25 +303,73 @@
             text-transform: uppercase;
         }
         
-        .page-header p { color: #aaa; font-size: 14px; margin-top: 0; }
+        .page-header p { color: #aaa; font-size: 14px; margin-top: 0; line-height: 1.4; }
+        
         .checklist-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
-        .checklist-item {
-            background-color: var(--secondary-bg); border: 1px solid #333;
-            border-radius: 8px; padding: 15px; display: flex; align-items: center; cursor: pointer;
+        
+        .inventory-item {
+            background-color: var(--secondary-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .checklist-item input[type="checkbox"] { width: 22px; height: 22px; margin-right: 15px; accent-color: var(--primary-red); }
-        .checklist-item label { font-size: 16px; color: var(--text-color); cursor: pointer; width: 100%; }
+
+        .item-name {
+            font-size: 16px;
+            color: var(--text-color);
+            flex-grow: 1;
+            font-weight: 500;
+        }
+
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .qty-input {
+            width: 60px;
+            padding: 10px;
+            background-color: #121212;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .qty-input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        .order-toggle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .order-toggle input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-bottom: 4px;
+            accent-color: var(--primary-red);
+            cursor: pointer;
+        }
 
         .btn-action {
             width: 100%; padding: 16px; background-color: var(--primary-red);
             color: white; border: none; border-radius: 8px; font-size: 16px;
             font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
         .btn-action:active { background-color: #cc0000; }
-
-        /* Estilo extra para o batch */
-        #batch-results .result-box { display: none; }
-        #batch-results.show-results .result-box { display: block; }
 
     </style>
 </head>
@@ -346,7 +394,7 @@
             <li><a href="#" onclick="changeView('recipes')">Receitas</a></li>
             <li><a href="#" onclick="changeView('calculator')">Super Suco</a></li>
             <li><a href="#" onclick="changeView('batch')">Pré-Batch Drinks</a></li>
-            <li><a href="#" onclick="changeView('shopping')">Lista de Compras</a></li>
+            <li><a href="#" onclick="changeView('shopping')">Estoque / Compras</a></li>
         </ul>
     </div>
     
@@ -393,6 +441,7 @@
                     </div>
                 </div>
             </details>
+            <!-- (As outras receitas foram mantidas exatamente iguais ao código anterior) -->
             <details>
                 <summary>Chá Pirata 🏴‍☠️</summary>
                 <div class="recipe-content">
@@ -503,7 +552,6 @@
                     <label for="batch-drink">Drink Base</label>
                     <select id="batch-drink">
                         <option value="cynar_cachaca">Cynar + Cachaça + Mel</option>
-                        <!-- Adicionaremos mais drinks aqui no futuro -->
                     </select>
                 </div>
 
@@ -512,7 +560,7 @@
                     <input type="number" id="batch-volume" placeholder="Ex: 1000 para 1 Litro" min="0">
                 </div>
 
-                <div class="results-grid show-results" id="batch-results">
+                <div class="results-grid">
                     <div class="result-box">
                         <div class="result-title">Cynar</div>
                         <div class="result-value"><span id="batch-ing1">0</span> ml</div>
@@ -529,31 +577,29 @@
             </div>
         </div>
 
-        <!-- ABA LISTA DE COMPRAS -->
+        <!-- ABA ESTOQUE / LISTA DE COMPRAS -->
         <div id="view-shopping" class="view">
             <div class="page-header">
-                <h2>O que acabou?</h2>
-                <p>Marque os itens para gerar a lista do WhatsApp</p>
+                <h2>Controle de Estoque</h2>
+                <p>Preencha a Qtd (0 vai pra lista de compras). Marque "Pedir" se tiver estoque, mas precisar repor.</p>
             </div>
             
             <div class="checklist-container" id="checklist">
                 <!-- A lista será gerada aqui via JavaScript -->
             </div>
 
-            <button class="btn-action" onclick="copyShoppingList()">📋 Gerar e Copiar Lista</button>
+            <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Estoque/Compras</button>
         </div>
 
     </main>
 
     <!-- SCRIPTS -->
     <script>
-        // Função para abrir/fechar menu lateral
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        // Função para trocar de abas
         function changeView(viewId) {
             document.querySelectorAll('.view').forEach(function(el) {
                 el.classList.remove('active');
@@ -562,7 +608,7 @@
             toggleMenu();
         }
 
-        // Lógica do Super Suco
+        // --- Super Suco ---
         const lemonType = document.getElementById('lemon-type');
         const peelWeight = document.getElementById('peel-weight');
         const citricRes = document.getElementById('citric-res');
@@ -588,7 +634,7 @@
         peelWeight.addEventListener('input', calculateSuperJuice);
         lemonType.addEventListener('change', calculateSuperJuice);
 
-        // Lógica da Calculadora Pré-Batch
+        // --- Pré-Batch ---
         const batchDrink = document.getElementById('batch-drink');
         const batchVolume = document.getElementById('batch-volume');
         const batchIng1 = document.getElementById('batch-ing1');
@@ -598,12 +644,9 @@
         function calculateBatch() {
             const vol = parseFloat(batchVolume.value) || 0;
             const drink = batchDrink.value;
-            
             let ing1 = 0, ing2 = 0, ing3 = 0;
 
             if (vol > 0 && drink === 'cynar_cachaca') {
-                // Total da receita base: 50 + 50 + 25 = 125ml
-                // Porcentagens: Cynar (40%), Cachaça (40%), Mel (20%)
                 ing1 = vol * 0.40;
                 ing2 = vol * 0.40;
                 ing3 = vol * 0.20;
@@ -616,13 +659,13 @@
         batchVolume.addEventListener('input', calculateBatch);
         batchDrink.addEventListener('change', calculateBatch);
 
-        // Lógica da Lista de Compras
+        // --- Estoque / Lista de Compras ---
         const items = [
             "Gelo", "Água", "Água com gás", "Refrigerante", "Red Bull", 
             "Molho de romã", "Hibisco", "Maracujá", "Rum", "Kariri", 
             "Mel", "Vodka", "Bourbon", "Hortelã", "Copo plástico", 
             "Tábua", "Ácido málico", "Morango congelado", "Cerveja", "Laranja", 
-            "Limão (Taiti, Siciliano, Cravo)", "Açúcar", "Rapadura", "Interfolha", 
+            "Limão", "Açúcar", "Rapadura", "Interfolha", 
             "Guardanapo", "Palito de kariri", "Gabriela", "Copo de dose"
         ];
 
@@ -630,32 +673,70 @@
 
         items.forEach((item, index) => {
             const div = document.createElement('div');
-            div.className = 'checklist-item';
+            div.className = 'inventory-item';
             div.innerHTML = `
-                <input type="checkbox" id="item-${index}" value="${item}">
-                <label for="item-${index}">${item}</label>
+                <div class="item-name">${item}</div>
+                <div class="item-controls">
+                    <input type="number" id="qty-${index}" class="qty-input" placeholder="Qtd" min="0">
+                    <label class="order-toggle">
+                        <input type="checkbox" id="order-${index}">
+                        Pedir
+                    </label>
+                </div>
             `;
             checklistContainer.appendChild(div);
         });
 
         function copyShoppingList() {
-            const checkedBoxes = document.querySelectorAll('#checklist input[type="checkbox"]:checked');
+            let stockText = "📦 *Estoque Atual:*\n";
+            let orderText = "🛒 *Lista de Compras:*\n";
             
-            if (checkedBoxes.length === 0) {
-                alert('Nenhum item selecionado! Marque o que acabou primeiro.');
+            let hasStock = false;
+            let hasOrder = false;
+
+            // Varre todos os itens gerados na tela
+            items.forEach((item, index) => {
+                const qtyInput = document.getElementById(`qty-${index}`).value;
+                const orderChecked = document.getElementById(`order-${index}`).checked;
+                
+                // Se a pessoa digitou algo OU marcou o botão de pedir
+                if (qtyInput !== "" || orderChecked) {
+                    const qty = qtyInput === "" ? null : parseFloat(qtyInput);
+                    
+                    // Vai pro estoque se a quantidade for maior que 0
+                    if (qty !== null && qty > 0) {
+                        stockText += `- ${item}: ${qty}\n`;
+                        hasStock = true;
+                    }
+                    
+                    // Vai pra lista de compra se a qtd for 0 ou a caixa "Pedir" estiver marcada
+                    if (qty === 0 || orderChecked) {
+                        orderText += `- ${item}\n`;
+                        hasOrder = true;
+                    }
+                }
+            });
+
+            if (!hasStock && !hasOrder) {
+                alert('Você não preencheu nenhuma quantidade nem marcou nenhum item!');
                 return;
             }
 
-            let listText = "📝 *Lista de Compras do Bar*\n\n*Faltando:*\n";
-            checkedBoxes.forEach(box => {
-                listText += `- ${box.value}\n`;
-            });
+            // Monta o texto final juntando as duas partes
+            let finalText = "";
+            if (hasStock) finalText += stockText + "\n";
+            if (hasOrder) finalText += orderText;
 
-            navigator.clipboard.writeText(listText).then(() => {
-                alert('Lista copiada com sucesso! É só colar no WhatsApp.');
-                checkedBoxes.forEach(box => box.checked = false);
+            navigator.clipboard.writeText(finalText).then(() => {
+                alert('Relatório copiado com sucesso! É só colar no WhatsApp.');
+                
+                // Limpa os campos depois de copiar
+                items.forEach((_, index) => {
+                    document.getElementById(`qty-${index}`).value = "";
+                    document.getElementById(`order-${index}`).checked = false;
+                });
             }).catch(err => {
-                alert('Erro ao copiar a lista. O seu navegador pode não suportar essa função.');
+                alert('Erro ao copiar. O seu navegador pode não suportar essa função.');
             });
         }
     </script>
