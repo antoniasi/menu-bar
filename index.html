@@ -152,14 +152,8 @@
             margin: 0 auto;
         }
 
-        .view {
-            display: none;
-        }
-
-        .view.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
+        .view { display: none; }
+        .view.active { display: block; animation: fadeIn 0.3s ease; }
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -189,6 +183,7 @@
             text-align: center;
             width: 100%;
             box-sizing: border-box;
+            margin-top: 15px;
         }
 
         .test-message h3 {
@@ -205,7 +200,7 @@
             margin: 0;
         }
 
-        /* --- RECEITAS --- */
+        /* --- RECEITAS E DETALHES --- */
         .category-title {
             color: var(--text-color);
             border-left: 4px solid var(--primary-red);
@@ -257,7 +252,7 @@
             border-top: 1px dashed #444;
         }
 
-        /* --- ESTILOS DE CALCULADORAS --- */
+        /* --- CALCULADORAS --- */
         .calculator-card {
             background-color: var(--secondary-bg);
             border: 1px solid #333;
@@ -341,10 +336,7 @@
             font-size: 16px;
         }
 
-        .qty-input:focus {
-            outline: none;
-            border-color: var(--primary-red);
-        }
+        .qty-input:focus { outline: none; border-color: var(--primary-red); }
 
         .order-toggle {
             display: flex;
@@ -371,6 +363,12 @@
         }
         .btn-action:active { background-color: #cc0000; }
 
+        /* --- DESTAQUE MANUAL --- */
+        .manual-alert {
+            color: #ffcccc;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
@@ -395,6 +393,7 @@
             <li><a href="#" onclick="changeView('calculator')">Super Suco</a></li>
             <li><a href="#" onclick="changeView('batch')">Pré-Batch Drinks</a></li>
             <li><a href="#" onclick="changeView('shopping')">Estoque / Compras</a></li>
+            <li><a href="#" onclick="changeView('manual')">Manual do Bar</a></li>
         </ul>
     </div>
     
@@ -441,7 +440,6 @@
                     </div>
                 </div>
             </details>
-            <!-- (As outras receitas foram mantidas exatamente iguais ao código anterior) -->
             <details>
                 <summary>Chá Pirata 🏴‍☠️</summary>
                 <div class="recipe-content">
@@ -591,6 +589,63 @@
             <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Estoque/Compras</button>
         </div>
 
+        <!-- ABA MANUAL DO BAR -->
+        <div id="view-manual" class="view">
+            <div class="page-header">
+                <h2>Manual do Bar</h2>
+                <p>Processos e Boas Práticas do Balcão</p>
+            </div>
+
+            <h2 class="category-title">Higiene e Operação</h2>
+
+            <details>
+                <summary>⚠️ Contaminação Cruzada</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li><span class="manual-alert">Alergênicos:</span> Lave as coqueteleiras e utensílios imediatamente com água e sabão após bater drinks que levam leite, clara de ovo (ou albumina), amendoim ou castanhas.</li>
+                        <li><span class="manual-alert">Isolamento de utensílios:</span> Nunca use a mesma colher bailarina de um drink com laticínios para mexer um drink cítrico ou translúcido sem lavar antes.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>🧊 Manuseio de Gelo</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li><span class="manual-alert">Regra de Ouro:</span> Nunca pegue gelo com as mãos nuas ou usando o próprio copo de vidro. O risco do copo quebrar e deixar cacos invisíveis no gelo é extremo.</li>
+                        <li>Sempre utilize a pá de gelo apropriada.</li>
+                        <li>Guarde a pá de gelo fora da cuba ou em um recipiente higienizado, nunca enterrada no meio do gelo.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>🔪 Tábuas e Facas</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>Limpe a tábua imediatamente após cortar frutas, guarnições ou ervas para evitar transferência de sabores indesejados para o próximo preparo.</li>
+                        <li>Não deixe facas sujas de cítricos (limão/laranja) paradas na bancada. O ácido oxida a lâmina e transfere gosto metálico para o próximo corte.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details>
+                <summary>🧼 Clean as You Go (Limpe enquanto trabalha)</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>Passe um pano limpo e úmido no balcão de serviço e nos bar mats (tapetes) constantemente entre os pedidos.</li>
+                        <li>Uma bancada limpa evita que o fundo do copo do cliente fique pegajoso, passa profissionalismo e agiliza a montagem da próxima comanda.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <div class="test-message">
+                <h3>📸 Utensílios e Copos (Em Breve)</h3>
+                <p>Em breve adicionaremos o guia completo de vidraria e ferramentas do bar utilizando as fotos reais do nosso próprio material!</p>
+            </div>
+
+        </div>
+
     </main>
 
     <!-- SCRIPTS -->
@@ -694,22 +749,18 @@
             let hasStock = false;
             let hasOrder = false;
 
-            // Varre todos os itens gerados na tela
             items.forEach((item, index) => {
                 const qtyInput = document.getElementById(`qty-${index}`).value;
                 const orderChecked = document.getElementById(`order-${index}`).checked;
                 
-                // Se a pessoa digitou algo OU marcou o botão de pedir
                 if (qtyInput !== "" || orderChecked) {
                     const qty = qtyInput === "" ? null : parseFloat(qtyInput);
                     
-                    // Vai pro estoque se a quantidade for maior que 0
                     if (qty !== null && qty > 0) {
                         stockText += `- ${item}: ${qty}\n`;
                         hasStock = true;
                     }
                     
-                    // Vai pra lista de compra se a qtd for 0 ou a caixa "Pedir" estiver marcada
                     if (qty === 0 || orderChecked) {
                         orderText += `- ${item}\n`;
                         hasOrder = true;
@@ -722,15 +773,12 @@
                 return;
             }
 
-            // Monta o texto final juntando as duas partes
             let finalText = "";
             if (hasStock) finalText += stockText + "\n";
             if (hasOrder) finalText += orderText;
 
             navigator.clipboard.writeText(finalText).then(() => {
                 alert('Relatório copiado com sucesso! É só colar no WhatsApp.');
-                
-                // Limpa os campos depois de copiar
                 items.forEach((_, index) => {
                     document.getElementById(`qty-${index}`).value = "";
                     document.getElementById(`order-${index}`).checked = false;
