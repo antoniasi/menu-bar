@@ -481,6 +481,42 @@
                     </div>
                 </div>
             </details>
+            <details>
+                <summary>Torta de Maçã 🍎</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>50 ml de Bourbon</li>
+                        <li>45 ml de Purê de maçã</li>
+                        <li>20 ml de Sour mix</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>Berry Mate 🧉🍓</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>60 ml de Whisky</li>
+                        <li>20 ml de Sour mix</li>
+                        <li>25 ml de Xarope de açúcar</li>
+                        <li>2 Morangos</li>
+                        <li>3 Amoras</li>
+                        <li>130 ml de Mate</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>Romase 🍹</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>100 ml do Batch</li>
+                        <li>15 ml de Sour mix</li>
+                        <li>Completar com Água com gás</li>
+                    </ul>
+                    <div class="obs">
+                        <strong>Preparo:</strong> Copo longo.
+                    </div>
+                </div>
+            </details>
 
             <h2 class="category-title">Sem Álcool</h2>
             <details>
@@ -630,7 +666,7 @@
             </details>
 
             <details>
-                <summary>🧼 Clean as You Go (Limpe enquanto trabalha)</summary>
+                <summary>🧼 Clean as You Go</summary>
                 <div class="recipe-content">
                     <ul>
                         <li>Passe um pano limpo e úmido no balcão de serviço e nos bar mats (tapetes) constantemente entre os pedidos.</li>
@@ -749,12 +785,18 @@
 
         // --- Estoque / Lista de Compras (Ordem Alfabética Automática) ---
         const items = [
-            "Gelo", "Água", "Água com gás", "Refrigerante", "Red Bull", 
-            "Molho de romã", "Hibisco", "Maracujá", "Rum", "Kariri", 
-            "Mel", "Vodka", "Bourbon", "Hortelã", "Copo plástico", 
-            "Tábua", "Ácido málico", "Morango congelado", "Cerveja", "Laranja", 
-            "Limão", "Açúcar", "Rapadura", "Interfolha", 
-            "Guardanapo", "Palito de kariri", "Gabriela", "Copo de dose"
+            "Afiador de faca", "Água", "Água com gás", "Água Tônica", "Álcool", "Álcool 70%",
+            "Amora congelada", "Açúcar", "Açúcar mascavo", "Balde", "Bobina", "Bourbon", 
+            "Café", "Campari", "Canela", "Canelinha", "Cerveja", "Cerveja zero", "Copo americano", 
+            "Copo americano grande", "Copo baixo", "Copo de dose", "Copo plástico", "Coqueteleira", 
+            "Cravo", "Cynar", "Cândida", "Desinfetante", "Detergente", "Essência de baunilha", 
+            "Faca", "Filtro de papel", "Gabriela", "Gelo", "Gengibre", "Gin", "Guardanapo", 
+            "Hibisco", "Hortelã", "Interfolha", "Jambu", "Kariri", "Laranja", "Limão Cravo", 
+            "Limão Siciliano", "Limão Taiti", "Maracujá", "Mate", "Maçã", "Mel", "Molho de romã", 
+            "Morango congelado", "Noz pecã", "Palito de kariri", "Palito pequeno", "Pano de balcão", 
+            "Pano de chão", "Papel higiênico", "Peneira", "Perflex", "Rapadura", "Red Bull", 
+            "Refrigerante", "Rum", "Sakê", "Salinas", "Seleta", "Strainer", "Tábua", "Velho Barreiro", 
+            "Vodka", "Xarope de romã", "Ácido cítrico", "Ácido málico"
         ];
 
         // Ordena os itens alfabeticamente usando a regra do português do Brasil
