@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Menu do Bar</title>
+    <title>Red Light Bar</title>
     <style>
         :root {
             --bg-color: #121212;
             --text-color: #f5f5f5;
             --primary-red: #ff0000;
             --secondary-bg: #1e1e1e;
-            --nav-width: 250px;
         }
 
         body {
@@ -20,6 +19,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            padding-bottom: 90px; /* Espaço para a barra de botões no final */
         }
 
         /* --- CABEÇALHO FIXO --- */
@@ -28,6 +28,7 @@
             border-bottom: 3px solid var(--primary-red);
             padding: 15px 20px;
             display: flex;
+            justify-content: center; /* Centraliza o título */
             align-items: center;
             position: fixed;
             top: 0;
@@ -36,113 +37,13 @@
             z-index: 1000;
         }
 
-        .nav-toggle {
-            width: 30px;
-            height: 22px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            margin-right: 20px;
-        }
-
-        .nav-toggle span {
-            display: block;
-            height: 3px;
-            width: 100%;
-            background-color: var(--primary-red);
-            border-radius: 2px;
-        }
-
         header h1 {
             margin: 0;
-            font-size: 18px;
-            color: var(--primary-red);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* --- MENU LATERAL (SIDEBAR) --- */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: calc(-1 * var(--nav-width));
-            width: var(--nav-width);
-            height: 100%;
-            background-color: var(--secondary-bg);
-            border-right: 2px solid var(--primary-red);
-            z-index: 2000;
-            transition: left 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar.open {
-            left: 0;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar-header h2 {
-            margin: 0;
-            color: var(--primary-red);
-            font-size: 18px;
-            text-transform: uppercase;
-        }
-
-        .close-btn {
-            color: white;
             font-size: 24px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar ul li {
-            border-bottom: 1px solid #333;
-        }
-
-        .sidebar ul li a {
-            display: block;
-            padding: 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
+            color: var(--primary-red);
             text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .sidebar ul li a:active {
-            background-color: #333;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            z-index: 1500;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .overlay.active {
-            display: block;
-            opacity: 1;
+            letter-spacing: 2px;
+            font-weight: 900;
         }
 
         /* --- CONTEÚDO PRINCIPAL --- */
@@ -156,218 +57,143 @@
         .view.active { display: block; animation: fadeIn 0.3s ease; }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- TELA INICIAL --- */
+        /* --- TELA INICIAL (MENU) --- */
         .home-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .logo-svg {
-            width: 250px;
-            height: 250px;
-            margin-bottom: 20px;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 25px;
         }
 
-        .test-message {
-            background-color: rgba(255, 0, 0, 0.1);
-            border: 1px solid var(--primary-red);
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
+        .home-menu {
             width: 100%;
-            box-sizing: border-box;
-            margin-top: 15px;
-        }
-
-        .test-message h3 {
-            color: var(--primary-red);
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-
-        .test-message p {
-            color: #ddd;
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        /* --- RECEITAS E DETALHES --- */
-        .category-title {
-            color: var(--text-color);
-            border-left: 4px solid var(--primary-red);
-            padding-left: 10px;
-            margin-top: 20px;
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-        
-        details {
-            background-color: var(--secondary-bg);
-            margin-bottom: 10px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #333;
-        }
-        
-        summary {
-            padding: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            list-style: none;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        summary::-webkit-details-marker { display: none; }
-        summary::after { content: '+'; color: var(--primary-red); font-size: 24px; }
-        details[open] summary::after { content: '−'; }
-        
-        .recipe-content {
-            padding: 0 15px 15px 15px;
-            line-height: 1.6;
-            font-size: 15px;
-            color: #ddd;
-        }
-        
-        ul { padding-left: 20px; margin: 10px 0; }
-        li { margin-bottom: 5px; }
-        
-        .obs { 
-            font-style: italic; 
-            color: #aaa; 
-            font-size: 14px;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #444;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        /* --- CALCULADORAS --- */
-        .calculator-card {
+        .menu-btn {
             background-color: var(--secondary-bg);
-            border: 1px solid #333;
-            border-radius: 8px;
+            border: 2px solid var(--primary-red);
+            color: white;
             padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .calculator-card h2 {
-            color: var(--primary-red);
-            margin-top: 0;
+            border-radius: 12px;
             font-size: 18px;
+            font-weight: bold;
             text-transform: uppercase;
-            text-align: center;
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #aaa; }
-        .input-group select, .input-group input {
-            width: 100%; padding: 12px; background-color: #121212; border: 1px solid #444;
-            color: white; border-radius: 6px; font-size: 16px; box-sizing: border-box;
-        }
-        .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--primary-red); }
-
-        .results-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 25px; }
-        .result-box { background-color: #121212; border-left: 4px solid var(--primary-red); padding: 15px; border-radius: 4px; }
-        .result-title { font-size: 14px; color: #aaa; margin-bottom: 5px; }
-        .result-value { font-size: 24px; font-weight: bold; color: white; }
-
-        /* --- ESTOQUE E LISTA DE COMPRAS --- */
-        .page-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .page-header h2 {
-            color: var(--primary-red);
-            font-size: 22px;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-        
-        .page-header p { color: #aaa; font-size: 14px; margin-top: 0; line-height: 1.4; }
-        
-        .checklist-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
-        
-        .inventory-item {
-            background-color: var(--secondary-bg);
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 12px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .item-name {
-            font-size: 16px;
-            color: var(--text-color);
-            flex-grow: 1;
-            font-weight: 500;
-        }
-
-        .item-controls {
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
-        .qty-input {
-            width: 60px;
-            padding: 10px;
-            background-color: #121212;
-            border: 1px solid #444;
-            color: white;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 16px;
+        .menu-btn:active {
+            background-color: var(--primary-red);
         }
 
-        .qty-input:focus { outline: none; border-color: var(--primary-red); }
-
-        .order-toggle {
+        /* --- NAVEGAÇÃO INFERIOR (Voltar/Avançar) --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--secondary-bg);
+            border-top: 2px solid #333;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 11px;
-            color: #aaa;
-            cursor: pointer;
+            padding: 15px;
+            box-sizing: border-box;
+            z-index: 1000;
+            gap: 10px;
         }
 
-        .order-toggle input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin-bottom: 4px;
-            accent-color: var(--primary-red);
-            cursor: pointer;
-        }
-
-        .btn-action {
-            width: 100%; padding: 16px; background-color: var(--primary-red);
-            color: white; border: none; border-radius: 8px; font-size: 16px;
-            font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        .btn-action:active { background-color: #cc0000; }
-
-        /* --- DESTAQUE MANUAL --- */
-        .manual-alert {
-            color: #ffcccc;
+        .bottom-nav button {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
+
+        .btn-home {
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        .btn-home:active {
+            background-color: #111;
+        }
+
+        .btn-next {
+            background-color: var(--primary-red);
+            color: white;
+        }
+
+        .btn-next:active {
+            background-color: #cc0000;
+        }
+
+        .btn-next:disabled {
+            background-color: #555;
+            color: #888;
+        }
+
+        /* --- ESTILOS GERAIS (Receitas, Manuais, Calc) --- */
+        .page-header { text-align: center; margin-bottom: 20px; }
+        .page-header h2 { color: var(--primary-red); font-size: 22px; margin-bottom: 5px; text-transform: uppercase; }
+        .page-header p { color: #aaa; font-size: 14px; margin-top: 0; line-height: 1.4; }
+        
+        .category-title { color: var(--text-color); border-left: 4px solid var(--primary-red); padding-left: 10px; margin-top: 20px; margin-bottom: 15px; font-size: 20px; }
+        details { background-color: var(--secondary-bg); margin-bottom: 10px; border-radius: 8px; overflow: hidden; border: 1px solid #333; }
+        summary { padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: '+'; color: var(--primary-red); font-size: 24px; }
+        details[open] summary::after { content: '−'; }
+        
+        .recipe-content { padding: 0 15px 15px 15px; line-height: 1.6; font-size: 15px; color: #ddd; }
+        ul { padding-left: 20px; margin: 10px 0; }
+        li { margin-bottom: 5px; }
+        .obs { font-style: italic; color: #aaa; font-size: 14px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #444; }
+        .manual-alert { color: #ffcccc; font-weight: bold; }
+
+        /* CALCULADORAS */
+        .calculator-card { background-color: var(--secondary-bg); border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .calculator-card h2 { color: var(--primary-red); margin-top: 0; font-size: 18px; text-transform: uppercase; text-align: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #aaa; }
+        .input-group select, .input-group input { width: 100%; padding: 12px; background-color: #121212; border: 1px solid #444; color: white; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--primary-red); }
+        .results-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 25px; }
+        .result-box { background-color: #121212; border-left: 4px solid var(--primary-red); padding: 15px; border-radius: 4px; }
+        .result-title { font-size: 14px; color: #aaa; margin-bottom: 5px; }
+        .result-value { font-size: 24px; font-weight: bold; color: white; }
+
+        /* ESTOQUE E LISTA DE COMPRAS */
+        .checklist-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
+        .inventory-item { background-color: var(--secondary-bg); border: 1px solid #333; border-radius: 8px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .item-name { font-size: 16px; color: var(--text-color); flex-grow: 1; font-weight: 500; }
+        .item-controls { display: flex; align-items: center; gap: 15px; }
+        .qty-input { width: 60px; padding: 10px; background-color: #121212; border: 1px solid #444; color: white; border-radius: 6px; text-align: center; font-size: 16px; }
+        .qty-input:focus { outline: none; border-color: var(--primary-red); }
+        .order-toggle { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #aaa; cursor: pointer; }
+        .order-toggle input[type="checkbox"] { width: 20px; height: 20px; margin-bottom: 4px; accent-color: var(--primary-red); cursor: pointer; }
+        .btn-action { width: 100%; padding: 16px; background-color: var(--primary-red); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
 
     </style>
 </head>
@@ -375,34 +201,13 @@
 
     <!-- CABEÇALHO -->
     <header>
-        <div class="nav-toggle" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
-        </div>
-        <h1>Menu do Bar</h1>
+        <h1>Red Light</h1>
     </header>
-
-    <!-- MENU LATERAL -->
-    <div id="sidebar" class="sidebar">
-        <div class="sidebar-header">
-            <h2>Menu</h2>
-            <span class="close-btn" onclick="toggleMenu()">×</span>
-        </div>
-        <ul>
-            <li><a href="#" onclick="changeView('home')">Início</a></li>
-            <li><a href="#" onclick="changeView('recipes')">Receitas</a></li>
-            <li><a href="#" onclick="changeView('calculator')">Super Suco</a></li>
-            <li><a href="#" onclick="changeView('batch')">Pré-Batch Drinks</a></li>
-            <li><a href="#" onclick="changeView('shopping')">Estoque / Compras</a></li>
-            <li><a href="#" onclick="changeView('manual')">Manual do Bar</a></li>
-        </ul>
-    </div>
-    
-    <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
     <!-- ÁREA PRINCIPAL -->
     <main>
         
-        <!-- TELA INICIAL -->
+        <!-- TELA INICIAL (MENU) -->
         <div id="view-home" class="view active">
             <div class="home-container">
                 <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -414,15 +219,67 @@
                     <path d="M 54 15 L 42 45 L 50 45 L 46 68 L 66 38 L 54 38 Z" fill="#fff" />
                 </svg>
 
-                <div class="test-message">
-                    <h3>🚧 Em Construção</h3>
-                    <p>Esta aplicação está em fase de testes e desenvolvimento. Estou aberto a receber ideias e sugestões do que mais podemos adicionar aqui para facilitar o nosso dia a dia no bar!</p>
+                <div class="home-menu">
+                    <button class="menu-btn" onclick="changeView('manual')">📖 Manual do Bar</button>
+                    <button class="menu-btn" onclick="changeView('recipes')">🍹 Receitas</button>
+                    <button class="menu-btn" onclick="changeView('shopping')">📦 Estoque / Compras</button>
+                    <button class="menu-btn" onclick="changeView('calculator')">🍋 Super Suco</button>
+                    <button class="menu-btn" onclick="changeView('batch')">🧪 Pré-Batch Drinks</button>
                 </div>
             </div>
         </div>
 
-        <!-- ABA DE RECEITAS -->
+        <!-- 1. ABA MANUAL DO BAR -->
+        <div id="view-manual" class="view">
+            <div class="page-header">
+                <h2>Manual do Bar</h2>
+                <p>Processos e Boas Práticas</p>
+            </div>
+            <h2 class="category-title">Higiene e Operação</h2>
+            <details>
+                <summary>⚠️ Contaminação Cruzada</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li><span class="manual-alert">Alergênicos:</span> Lave as coqueteleiras e utensílios imediatamente com água e sabão após bater drinks que levam leite, clara de ovo (ou albumina), amendoim ou castanhas.</li>
+                        <li><span class="manual-alert">Isolamento de utensílios:</span> Nunca use a mesma colher bailarina de um drink com laticínios para mexer um drink cítrico ou translúcido sem lavar antes.</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>🧊 Manuseio de Gelo</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li><span class="manual-alert">Regra de Ouro:</span> Nunca pegue gelo com as mãos nuas ou usando o próprio copo de vidro. O risco do copo quebrar e deixar cacos invisíveis no gelo é extremo.</li>
+                        <li>Sempre utilize a pá de gelo apropriada.</li>
+                        <li>Guarde a pá de gelo fora da cuba ou em um recipiente higienizado, nunca enterrada no meio do gelo.</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>🔪 Tábuas e Facas</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>Limpe a tábua imediatamente após cortar frutas, guarnições ou ervas.</li>
+                        <li>Não deixe facas sujas de cítricos (limão/laranja) paradas na bancada.</li>
+                    </ul>
+                </div>
+            </details>
+            <details>
+                <summary>🧼 Clean as You Go</summary>
+                <div class="recipe-content">
+                    <ul>
+                        <li>Passe um pano limpo e úmido no balcão e nos bar mats constantemente.</li>
+                        <li>Uma bancada limpa evita que o fundo do copo do cliente fique pegajoso e agiliza a comanda.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <!-- 2. ABA DE RECEITAS -->
         <div id="view-recipes" class="view">
+            <div class="page-header">
+                <h2>Receitas</h2>
+            </div>
             <h2 class="category-title">Alcoólicos</h2>
             <details>
                 <summary>Caipirinha de Jambu 🍹</summary>
@@ -434,10 +291,7 @@
                         <li>25 ml de Xarope de Rapadura</li>
                         <li>75 ml de Jambu</li>
                     </ul>
-                    <div class="obs">
-                        <strong>Finalização:</strong> Finalizar com rapadura e limão.<br>
-                        <strong>Obs:</strong> Caipirinha não é necessário gelo no copo.
-                    </div>
+                    <div class="obs"><strong>Finalização:</strong> Finalizar com rapadura e limão.<br><strong>Obs:</strong> Caipirinha não é necessário gelo no copo.</div>
                 </div>
             </details>
             <details>
@@ -451,9 +305,7 @@
                         <li>8 folhas de Hortelã</li>
                         <li>150 ml de Matte</li>
                     </ul>
-                    <div class="obs">
-                        <strong>Finalização:</strong> Finalizar com hortelã.
-                    </div>
+                    <div class="obs"><strong>Finalização:</strong> Finalizar com hortelã.</div>
                 </div>
             </details>
             <details>
@@ -464,21 +316,14 @@
                         <li>25 ml de Gengibre</li>
                         <li>225 ml de Kariri</li>
                     </ul>
-                    <div class="obs">
-                        <strong>Preparo:</strong> Servir no copo de plástico.
-                    </div>
+                    <div class="obs"><strong>Preparo:</strong> Servir no copo de plástico.</div>
                 </div>
             </details>
             <details>
                 <summary>Negroni 🥃</summary>
                 <div class="recipe-content">
-                    <ul>
-                        <li>120 ml de Negroni já pronto</li>
-                    </ul>
-                    <div class="obs">
-                        <strong>Preparo:</strong> Diluir na coqueteleira (com bastante gelo usando a parte alta). Coar e passar pro copo baixo com gelo grande.<br>
-                        <strong>Finalização:</strong> Cortar e torcer um pedaço da casca da laranja para soltar o aroma e jogar no copo.
-                    </div>
+                    <ul><li>120 ml de Negroni já pronto</li></ul>
+                    <div class="obs"><strong>Preparo:</strong> Diluir na coqueteleira. Passar pro copo baixo com gelo grande.<br><strong>Finalização:</strong> Torcer um pedaço da casca da laranja e jogar no copo.</div>
                 </div>
             </details>
             <details>
@@ -512,9 +357,7 @@
                         <li>15 ml de Sour mix</li>
                         <li>Completar com Água com gás</li>
                     </ul>
-                    <div class="obs">
-                        <strong>Preparo:</strong> Copo longo.
-                    </div>
+                    <div class="obs"><strong>Preparo:</strong> Copo longo.</div>
                 </div>
             </details>
 
@@ -545,10 +388,20 @@
             </details>
         </div>
 
-        <!-- ABA DE CALCULADORA SUPER SUCO -->
+        <!-- 3. ABA ESTOQUE / LISTA DE COMPRAS -->
+        <div id="view-shopping" class="view">
+            <div class="page-header">
+                <h2>Controle de Estoque</h2>
+                <p>Preencha a Qtd (0 vai pra lista). Marque "Pedir" para repor.</p>
+            </div>
+            <div class="checklist-container" id="checklist"></div>
+            <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Estoque/Compras</button>
+        </div>
+
+        <!-- 4. ABA DE CALCULADORA SUPER SUCO -->
         <div id="view-calculator" class="view">
             <div class="calculator-card">
-                <h2>Calculadora Super Suco</h2>
+                <h2>Super Suco</h2>
                 <div class="input-group">
                     <label for="lemon-type">Tipo de Limão</label>
                     <select id="lemon-type">
@@ -561,176 +414,85 @@
                     <input type="number" id="peel-weight" placeholder="Ex: 50" min="0">
                 </div>
                 <div class="results-grid">
-                    <div class="result-box">
-                        <div class="result-title">Ácido Cítrico</div>
-                        <div class="result-value"><span id="citric-res">0.00</span> g</div>
-                    </div>
-                    <div class="result-box">
-                        <div class="result-title">Ácido Málico</div>
-                        <div class="result-value"><span id="malic-res">0.00</span> g</div>
-                    </div>
-                    <div class="result-box">
-                        <div class="result-title">Água</div>
-                        <div class="result-value"><span id="water-res">0</span> g</div>
-                    </div>
+                    <div class="result-box"><div class="result-title">Ácido Cítrico</div><div class="result-value"><span id="citric-res">0.00</span> g</div></div>
+                    <div class="result-box"><div class="result-title">Ácido Málico</div><div class="result-value"><span id="malic-res">0.00</span> g</div></div>
+                    <div class="result-box"><div class="result-title">Água</div><div class="result-value"><span id="water-res">0</span> g</div></div>
                 </div>
             </div>
         </div>
 
-        <!-- ABA DE PRÉ-BATCH -->
+        <!-- 5. ABA DE PRÉ-BATCH -->
         <div id="view-batch" class="view">
             <div class="calculator-card">
-                <h2>Calculadora de Pré-Batch</h2>
-                
+                <h2>Pré-Batch Drinks</h2>
                 <div class="input-group">
                     <label for="batch-drink">Drink Base</label>
                     <select id="batch-drink">
                         <option value="cynar_cachaca">Cynar Sour</option>
                     </select>
                 </div>
-
                 <div class="input-group">
                     <label for="batch-volume">Volume total desejado (ml)</label>
                     <input type="number" id="batch-volume" placeholder="Ex: 1000 para 1 Litro" min="0">
                 </div>
-
                 <div class="results-grid">
-                    <div class="result-box">
-                        <div class="result-title">Cynar</div>
-                        <div class="result-value"><span id="batch-ing1">0</span> ml</div>
-                    </div>
-                    <div class="result-box">
-                        <div class="result-title">Cachaça</div>
-                        <div class="result-value"><span id="batch-ing2">0</span> ml</div>
-                    </div>
-                    <div class="result-box">
-                        <div class="result-title">Mel</div>
-                        <div class="result-value"><span id="batch-ing3">0</span> ml</div>
-                    </div>
+                    <div class="result-box"><div class="result-title">Cynar</div><div class="result-value"><span id="batch-ing1">0</span> ml</div></div>
+                    <div class="result-box"><div class="result-title">Cachaça</div><div class="result-value"><span id="batch-ing2">0</span> ml</div></div>
+                    <div class="result-box"><div class="result-title">Mel</div><div class="result-value"><span id="batch-ing3">0</span> ml</div></div>
                 </div>
             </div>
-        </div>
-
-        <!-- ABA ESTOQUE / LISTA DE COMPRAS -->
-        <div id="view-shopping" class="view">
-            <div class="page-header">
-                <h2>Controle de Estoque</h2>
-                <p>Preencha a Qtd (0 vai pra lista de compras). Marque "Pedir" se tiver estoque, mas precisar repor.</p>
-            </div>
-            
-            <div class="checklist-container" id="checklist">
-                <!-- A lista será gerada aqui via JavaScript -->
-            </div>
-
-            <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Estoque/Compras</button>
-        </div>
-
-        <!-- ABA MANUAL DO BAR -->
-        <div id="view-manual" class="view">
-            <div class="page-header">
-                <h2>Manual do Bar</h2>
-                <p>Processos e Boas Práticas do Balcão</p>
-            </div>
-
-            <h2 class="category-title">Higiene e Operação</h2>
-
-            <details>
-                <summary>⚠️ Contaminação Cruzada</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li><span class="manual-alert">Alergênicos:</span> Lave as coqueteleiras e utensílios imediatamente com água e sabão após bater drinks que levam leite, clara de ovo (ou albumina), amendoim ou castanhas.</li>
-                        <li><span class="manual-alert">Isolamento de utensílios:</span> Nunca use a mesma colher bailarina de um drink com laticínios para mexer um drink cítrico ou translúcido sem lavar antes.</li>
-                    </ul>
-                </div>
-            </details>
-
-            <details>
-                <summary>🧊 Manuseio de Gelo</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li><span class="manual-alert">Regra de Ouro:</span> Nunca pegue gelo com as mãos nuas ou usando o próprio copo de vidro. O risco do copo quebrar e deixar cacos invisíveis no gelo é extremo.</li>
-                        <li>Sempre utilize a pá de gelo apropriada.</li>
-                        <li>Guarde a pá de gelo fora da cuba ou em um recipiente higienizado, nunca enterrada no meio do gelo.</li>
-                    </ul>
-                </div>
-            </details>
-
-            <details>
-                <summary>🔪 Tábuas e Facas</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>Limpe a tábua imediatamente após cortar frutas, guarnições ou ervas para evitar transferência de sabores indesejados para o próximo preparo.</li>
-                        <li>Não deixe facas sujas de cítricos (limão/laranja) paradas na bancada. O ácido oxida a lâmina e transfere gosto metálico para o próximo corte.</li>
-                    </ul>
-                </div>
-            </details>
-
-            <details>
-                <summary>🧼 Clean as You Go</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>Passe um pano limpo e úmido no balcão de serviço e nos bar mats (tapetes) constantemente entre os pedidos.</li>
-                        <li>Uma bancada limpa evita que o fundo do copo do cliente fique pegajoso, passa profissionalismo e agiliza a montagem da próxima comanda.</li>
-                    </ul>
-                </div>
-            </details>
-
-            <div class="test-message">
-                <h3>📸 Utensílios e Copos (Em Breve)</h3>
-                <p>Em breve adicionaremos o guia completo de vidraria e ferramentas do bar utilizando as fotos reais do nosso próprio material!</p>
-            </div>
-
         </div>
 
     </main>
 
+    <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
+    <div id="bottom-bar" class="bottom-nav" style="display: none;">
+        <button class="btn-home" onclick="changeView('home')">🏠 Início</button>
+        <button id="btn-next" class="btn-next" onclick="goNext()">Próximo ➡️</button>
+    </div>
+
     <!-- SCRIPTS -->
     <script>
-        // Função para abrir/fechar menu lateral
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('active');
-        }
+        // Ordem sequencial das abas
+        const viewOrder = ['home', 'manual', 'recipes', 'shopping', 'calculator', 'batch'];
+        let currentViewIndex = 0;
 
-        // Função para trocar de abas
         function changeView(viewId) {
-            document.querySelectorAll('.view').forEach(function(el) {
-                el.classList.remove('active');
-            });
+            // Esconde todas as telas
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            
+            // Mostra a selecionada e sobe pro topo
             document.getElementById('view-' + viewId).classList.add('active');
-            
-            // Se o menu estiver aberto, fecha ao trocar de tela
-            if (document.getElementById('sidebar').classList.contains('open')) {
-                toggleMenu();
+            window.scrollTo(0, 0);
+
+            // Atualiza o índice atual
+            currentViewIndex = viewOrder.indexOf(viewId);
+
+            // Controle da barra de baixo
+            const bottomBar = document.getElementById('bottom-bar');
+            const btnNext = document.getElementById('btn-next');
+
+            if (viewId === 'home') {
+                bottomBar.style.display = 'none'; // Esconde na home
+            } else {
+                bottomBar.style.display = 'flex'; // Mostra nas internas
+                
+                // Se for a última aba (Pré-Batch), muda o texto do botão avançar ou desativa
+                if (currentViewIndex === viewOrder.length - 1) {
+                    btnNext.disabled = true;
+                    btnNext.textContent = "Fim ✅";
+                } else {
+                    btnNext.disabled = false;
+                    btnNext.textContent = "Próximo ➡️";
+                }
             }
         }
 
-        // --- Lógica de Swipe para o menu lateral ---
-        let touchstartX = 0;
-        let touchendX = 0;
-
-        function handleGesture() {
-            const sidebar = document.getElementById('sidebar');
-            const isOpen = sidebar.classList.contains('open');
-            
-            // Deslize para a direita a partir da borda esquerda (abrir menu)
-            if (touchendX > touchstartX + 50 && touchstartX < 30 && !isOpen) {
-                toggleMenu();
-            }
-            // Deslize para a esquerda (fechar menu)
-            if (touchendX < touchstartX - 50 && isOpen) {
-                toggleMenu();
+        function goNext() {
+            if (currentViewIndex < viewOrder.length - 1) {
+                changeView(viewOrder[currentViewIndex + 1]);
             }
         }
-
-        document.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-        });
-
-        document.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            handleGesture();
-        });
 
         // --- Super Suco ---
         const lemonType = document.getElementById('lemon-type');
@@ -775,7 +537,6 @@
                 ing2 = vol * 0.40;
                 ing3 = vol * 0.20;
             }
-
             batchIng1.textContent = Math.round(ing1);
             batchIng2.textContent = Math.round(ing2);
             batchIng3.textContent = Math.round(ing3);
@@ -783,7 +544,7 @@
         batchVolume.addEventListener('input', calculateBatch);
         batchDrink.addEventListener('change', calculateBatch);
 
-        // --- Estoque / Lista de Compras (Ordem Alfabética Automática) ---
+        // --- Estoque / Lista de Compras ---
         const items = [
             "Afiador de faca", "Água", "Água com gás", "Água Tônica", "Álcool", "Álcool 70%",
             "Amora congelada", "Açúcar", "Açúcar mascavo", "Balde", "Bobina", "Bourbon", 
@@ -799,9 +560,7 @@
             "Vodka", "Xarope de romã", "Ácido cítrico", "Ácido málico"
         ];
 
-        // Ordena os itens alfabeticamente usando a regra do português do Brasil
         items.sort((a, b) => a.localeCompare(b, 'pt-BR'));
-
         const checklistContainer = document.getElementById('checklist');
 
         items.forEach((item, index) => {
@@ -823,7 +582,6 @@
         function copyShoppingList() {
             let stockText = "📦 *Estoque Atual:*\n";
             let orderText = "🛒 *Lista de Compras:*\n";
-            
             let hasStock = false;
             let hasOrder = false;
 
@@ -833,16 +591,8 @@
                 
                 if (qtyInput !== "" || orderChecked) {
                     const qty = qtyInput === "" ? null : parseFloat(qtyInput);
-                    
-                    if (qty !== null && qty > 0) {
-                        stockText += `- ${item}: ${qty}\n`;
-                        hasStock = true;
-                    }
-                    
-                    if (qty === 0 || orderChecked) {
-                        orderText += `- ${item}\n`;
-                        hasOrder = true;
-                    }
+                    if (qty !== null && qty > 0) { stockText += `- ${item}: ${qty}\n`; hasStock = true; }
+                    if (qty === 0 || orderChecked) { orderText += `- ${item}\n`; hasOrder = true; }
                 }
             });
 
@@ -861,9 +611,7 @@
                     document.getElementById(`qty-${index}`).value = "";
                     document.getElementById(`order-${index}`).checked = false;
                 });
-            }).catch(err => {
-                alert('Erro ao copiar. O seu navegador pode não suportar essa função.');
-            });
+            }).catch(err => alert('Erro ao copiar. O seu navegador pode não suportar essa função.'));
         }
     </script>
 </body>
