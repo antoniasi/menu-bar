@@ -19,7 +19,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            padding-bottom: 90px; /* Espaço para a barra de botões no final */
+            padding-bottom: 90px;
         }
 
         /* --- CABEÇALHO FIXO --- */
@@ -28,7 +28,7 @@
             border-bottom: 3px solid var(--primary-red);
             padding: 15px 20px;
             display: flex;
-            justify-content: center; /* Centraliza o título */
+            justify-content: center;
             align-items: center;
             position: fixed;
             top: 0;
@@ -69,18 +69,8 @@
             margin-top: 10px;
         }
 
-        .logo-svg {
-            width: 160px;
-            height: 160px;
-            margin-bottom: 25px;
-        }
-
-        .home-menu {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+        .logo-svg { width: 160px; height: 160px; margin-bottom: 25px; }
+        .home-menu { width: 100%; display: flex; flex-direction: column; gap: 15px; }
 
         .menu-btn {
             background-color: var(--secondary-bg);
@@ -98,63 +88,27 @@
             align-items: center;
             gap: 15px;
         }
+        .menu-btn:active { background-color: var(--primary-red); }
 
-        .menu-btn:active {
-            background-color: var(--primary-red);
-        }
-
-        /* --- NAVEGAÇÃO INFERIOR (Voltar/Avançar) --- */
+        /* --- NAVEGAÇÃO INFERIOR --- */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--secondary-bg);
-            border-top: 2px solid #333;
-            display: flex;
-            padding: 15px;
-            box-sizing: border-box;
-            z-index: 1000;
-            gap: 10px;
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--secondary-bg); border-top: 2px solid #333;
+            display: flex; padding: 15px; box-sizing: border-box; z-index: 1000; gap: 10px;
         }
 
         .bottom-nav button {
-            flex: 1;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
+            flex: 1; padding: 15px; border-radius: 8px; font-size: 16px;
+            font-weight: bold; text-transform: uppercase; border: none; cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
+        .btn-home { background-color: #333; color: white; border: 1px solid #555; }
+        .btn-home:active { background-color: #111; }
+        .btn-next { background-color: var(--primary-red); color: white; }
+        .btn-next:active { background-color: #cc0000; }
+        .btn-next:disabled { background-color: #555; color: #888; }
 
-        .btn-home {
-            background-color: #333;
-            color: white;
-            border: 1px solid #555;
-        }
-
-        .btn-home:active {
-            background-color: #111;
-        }
-
-        .btn-next {
-            background-color: var(--primary-red);
-            color: white;
-        }
-
-        .btn-next:active {
-            background-color: #cc0000;
-        }
-
-        .btn-next:disabled {
-            background-color: #555;
-            color: #888;
-        }
-
-        /* --- ESTILOS GERAIS (Receitas, Manuais, Calc) --- */
+        /* --- ESTILOS GERAIS --- */
         .page-header { text-align: center; margin-bottom: 20px; }
         .page-header h2 { color: var(--primary-red); font-size: 22px; margin-bottom: 5px; text-transform: uppercase; }
         .page-header p { color: #aaa; font-size: 14px; margin-top: 0; line-height: 1.4; }
@@ -172,17 +126,20 @@
         .obs { font-style: italic; color: #aaa; font-size: 14px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #444; }
         .manual-alert { color: #ffcccc; font-weight: bold; }
 
-        /* CALCULADORAS */
+        /* CALCULADORAS E CARDS */
         .calculator-card { background-color: var(--secondary-bg); border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-        .calculator-card h2 { color: var(--primary-red); margin-top: 0; font-size: 18px; text-transform: uppercase; text-align: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
+        .calculator-card h2 { color: var(--primary-red); margin-top: 0; font-size: 18px; text-transform: uppercase; text-align: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
+        .calculator-card .obs { border-top: none; padding-top: 0; margin-top: 0; margin-bottom: 15px; text-align: center; }
+        
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #aaa; }
         .input-group select, .input-group input { width: 100%; padding: 12px; background-color: #121212; border: 1px solid #444; color: white; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
         .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--primary-red); }
-        .results-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 25px; }
-        .result-box { background-color: #121212; border-left: 4px solid var(--primary-red); padding: 15px; border-radius: 4px; }
-        .result-title { font-size: 14px; color: #aaa; margin-bottom: 5px; }
-        .result-value { font-size: 24px; font-weight: bold; color: white; }
+        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .results-grid.full { grid-template-columns: 1fr; }
+        .result-box { background-color: #121212; border-left: 4px solid var(--primary-red); padding: 12px; border-radius: 4px; }
+        .result-title { font-size: 13px; color: #aaa; margin-bottom: 5px; }
+        .result-value { font-size: 20px; font-weight: bold; color: white; }
 
         /* ESTOQUE E LISTA DE COMPRAS */
         .checklist-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
@@ -222,6 +179,7 @@
                 <div class="home-menu">
                     <button class="menu-btn" onclick="changeView('manual')">📖 Manual do Bar</button>
                     <button class="menu-btn" onclick="changeView('recipes')">🍹 Receitas</button>
+                    <button class="menu-btn" onclick="changeView('preps')">🥣 Preparos do Bar</button>
                     <button class="menu-btn" onclick="changeView('shopping')">📦 Estoque / Compras</button>
                     <button class="menu-btn" onclick="changeView('calculator')">🍋 Super Suco</button>
                     <button class="menu-btn" onclick="changeView('batch')">🧪 Pré-Batch Drinks</button>
@@ -240,8 +198,8 @@
                 <summary>⚠️ Contaminação Cruzada</summary>
                 <div class="recipe-content">
                     <ul>
-                        <li><span class="manual-alert">Alergênicos:</span> Lave as coqueteleiras e utensílios imediatamente com água e sabão após bater drinks que levam leite, clara de ovo (ou albumina), amendoim ou castanhas.</li>
-                        <li><span class="manual-alert">Isolamento de utensílios:</span> Nunca use a mesma colher bailarina de um drink com laticínios para mexer um drink cítrico ou translúcido sem lavar antes.</li>
+                        <li><span class="manual-alert">Alergênicos:</span> Lave as coqueteleiras e utensílios imediatamente com água e sabão após bater drinks que levam leite, clara de ovo, amendoim ou castanhas.</li>
+                        <li><span class="manual-alert">Isolamento de utensílios:</span> Nunca use a mesma colher bailarina de um drink com laticínios para mexer um drink cítrico ou translúcido sem lavar.</li>
                     </ul>
                 </div>
             </details>
@@ -249,9 +207,9 @@
                 <summary>🧊 Manuseio de Gelo</summary>
                 <div class="recipe-content">
                     <ul>
-                        <li><span class="manual-alert">Regra de Ouro:</span> Nunca pegue gelo com as mãos nuas ou usando o próprio copo de vidro. O risco do copo quebrar e deixar cacos invisíveis no gelo é extremo.</li>
+                        <li><span class="manual-alert">Regra de Ouro:</span> Nunca pegue gelo com as mãos nuas ou usando o próprio copo de vidro.</li>
                         <li>Sempre utilize a pá de gelo apropriada.</li>
-                        <li>Guarde a pá de gelo fora da cuba ou em um recipiente higienizado, nunca enterrada no meio do gelo.</li>
+                        <li>Guarde a pá de gelo fora da cuba ou em um recipiente higienizado.</li>
                     </ul>
                 </div>
             </details>
@@ -259,8 +217,8 @@
                 <summary>🔪 Tábuas e Facas</summary>
                 <div class="recipe-content">
                     <ul>
-                        <li>Limpe a tábua imediatamente após cortar frutas, guarnições ou ervas.</li>
-                        <li>Não deixe facas sujas de cítricos (limão/laranja) paradas na bancada.</li>
+                        <li>Limpe a tábua imediatamente após cortar frutas ou ervas.</li>
+                        <li>Não deixe facas sujas de cítricos paradas na bancada.</li>
                     </ul>
                 </div>
             </details>
@@ -269,7 +227,7 @@
                 <div class="recipe-content">
                     <ul>
                         <li>Passe um pano limpo e úmido no balcão e nos bar mats constantemente.</li>
-                        <li>Uma bancada limpa evita que o fundo do copo do cliente fique pegajoso e agiliza a comanda.</li>
+                        <li>Bancada limpa evita copo pegajoso e agiliza a comanda.</li>
                     </ul>
                 </div>
             </details>
@@ -281,114 +239,103 @@
                 <h2>Receitas</h2>
             </div>
             <h2 class="category-title">Alcoólicos</h2>
-            <details>
-                <summary>Caipirinha de Jambu 🍹</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>1/2 Limão Siciliano</li>
-                        <li>1/2 Limão Taiti</li>
-                        <li>1/2 Limão Cravo</li>
-                        <li>25 ml de Xarope de Rapadura</li>
-                        <li>75 ml de Jambu</li>
-                    </ul>
-                    <div class="obs"><strong>Finalização:</strong> Finalizar com rapadura e limão.<br><strong>Obs:</strong> Caipirinha não é necessário gelo no copo.</div>
-                </div>
-            </details>
-            <details>
-                <summary>Chá Pirata 🏴‍☠️</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>75 ml de Rum Branco</li>
-                        <li>25 ml de Limão Taiti</li>
-                        <li>15 ml de Açúcar</li>
-                        <li>3 colheres bailarinas de Maracujá</li>
-                        <li>8 folhas de Hortelã</li>
-                        <li>150 ml de Matte</li>
-                    </ul>
-                    <div class="obs"><strong>Finalização:</strong> Finalizar com hortelã.</div>
-                </div>
-            </details>
-            <details>
-                <summary>Kariri com Mel 🍯</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>25 ml de Limão Taiti</li>
-                        <li>25 ml de Gengibre</li>
-                        <li>225 ml de Kariri</li>
-                    </ul>
-                    <div class="obs"><strong>Preparo:</strong> Servir no copo de plástico.</div>
-                </div>
-            </details>
-            <details>
-                <summary>Negroni 🥃</summary>
-                <div class="recipe-content">
-                    <ul><li>120 ml de Negroni já pronto</li></ul>
-                    <div class="obs"><strong>Preparo:</strong> Diluir na coqueteleira. Passar pro copo baixo com gelo grande.<br><strong>Finalização:</strong> Torcer um pedaço da casca da laranja e jogar no copo.</div>
-                </div>
-            </details>
-            <details>
-                <summary>Torta de Maçã 🍎</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>50 ml de Bourbon</li>
-                        <li>45 ml de Purê de maçã</li>
-                        <li>20 ml de Sour mix</li>
-                    </ul>
-                </div>
-            </details>
-            <details>
-                <summary>Berry Mate 🧉🍓</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>60 ml de Whisky</li>
-                        <li>20 ml de Sour mix</li>
-                        <li>25 ml de Xarope de açúcar</li>
-                        <li>2 Morangos</li>
-                        <li>3 Amoras</li>
-                        <li>130 ml de Mate</li>
-                    </ul>
-                </div>
-            </details>
-            <details>
-                <summary>Romase 🍹</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>100 ml do Batch</li>
-                        <li>15 ml de Sour mix</li>
-                        <li>Completar com Água com gás</li>
-                    </ul>
-                    <div class="obs"><strong>Preparo:</strong> Copo longo.</div>
-                </div>
-            </details>
+            
+            <details><summary>Berry Mate 🧉🍓</summary><div class="recipe-content"><ul><li>60 ml de Whisky</li><li>20 ml de Sour mix</li><li>25 ml de Xarope de açúcar</li><li>2 Morangos</li><li>3 Amoras</li><li>130 ml de Mate</li></ul></div></details>
+            <details><summary>Caipirinha de Jambu 🍹</summary><div class="recipe-content"><ul><li>1/2 Limão Siciliano</li><li>1/2 Limão Taiti</li><li>1/2 Limão Cravo</li><li>25 ml de Xarope de Rapadura</li><li>75 ml de Jambu</li></ul><div class="obs"><strong>Finalização:</strong> Finalizar com rapadura e limão.<br><strong>Obs:</strong> Caipirinha não é necessário gelo no copo.</div></div></details>
+            <details><summary>Chá Pirata 🏴‍☠️</summary><div class="recipe-content"><ul><li>75 ml de Rum Branco</li><li>25 ml de Limão Taiti</li><li>15 ml de Açúcar</li><li>3 colheres bailarinas de Maracujá</li><li>8 folhas de Hortelã</li><li>150 ml de Matte</li></ul><div class="obs"><strong>Finalização:</strong> Finalizar com hortelã.</div></div></details>
+            <details><summary>Kariri com Mel 🍯</summary><div class="recipe-content"><ul><li>25 ml de Limão Taiti</li><li>25 ml de Gengibre</li><li>225 ml de Kariri</li></ul><div class="obs"><strong>Preparo:</strong> Servir no copo de plástico.</div></div></details>
+            <details><summary>La Isla Bonita 🥥</summary><div class="recipe-content"><ul><li>60 ml de Rum Ouro</li><li>50 ml de Xarope de Abacaxi</li><li>15 ml de Malibu</li><li>10 ml de Açúcar</li></ul><div class="obs"><strong>Preparo:</strong> Copo Baixo.<br><strong>Guarnição:</strong> Coco tostado.</div></div></details>
+            <details><summary>Negroni 🥃</summary><div class="recipe-content"><ul><li>120 ml de Negroni já pronto</li></ul><div class="obs"><strong>Preparo:</strong> Diluir na coqueteleira. Passar pro copo baixo com gelo grande.<br><strong>Finalização:</strong> Torcer um pedaço da casca da laranja e jogar no copo.</div></div></details>
+            <details><summary>Romase 🍹</summary><div class="recipe-content"><ul><li>100 ml do Batch</li><li>15 ml de Sour mix</li><li>Completar com Água com gás</li></ul><div class="obs"><strong>Preparo:</strong> Copo longo.</div></div></details>
+            <details><summary>Saladinha 🌿</summary><div class="recipe-content"><ul><li>50 ml de Cachaça com Azeite</li><li>50 ml de Xarope de Missô com Maracujá</li><li>20 ml de Limão Taiti</li><li>10 ml de Açúcar</li></ul><div class="obs"><strong>Preparo:</strong> Copo Baixo.<br><strong>Guarnição:</strong> Ramo de alecrim.</div></div></details>
+            <details><summary>Tinto de Verão 🍷</summary><div class="recipe-content"><ul><li>100 ml de Vinho</li><li>25 ml de Triple Sec</li><li>10 ml de Limão Siciliano</li><li>Completar com Soda (~70ml)</li></ul><div class="obs"><strong>Preparo:</strong> Copo Americano Grande.<br><strong>Guarnição:</strong> Meia lua de laranja.</div></div></details>
+            <details><summary>Torta de Maçã 🍎</summary><div class="recipe-content"><ul><li>50 ml de Bourbon</li><li>45 ml de Purê de maçã</li><li>20 ml de Sour mix</li></ul></div></details>
+            <details><summary>Velvet 🍓</summary><div class="recipe-content"><ul><li>60 ml de Vodka</li><li>60 ml de Xarope de Morango</li><li>20 ml de Limão Siciliano</li><li>15 ml de Açúcar</li></ul><div class="obs"><strong>Preparo:</strong> Copo Baixo.<br><strong>Guarnição:</strong> Espuma de baunilha do sifão e raspas de limão siciliano.</div></div></details>
 
             <h2 class="category-title">Sem Álcool</h2>
-            <details>
-                <summary>Amora Mia 🍓</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>4 Morangos</li>
-                        <li>4 Amoras</li>
-                        <li>25 ml de Limão</li>
-                        <li>15 ml de Açúcar</li>
-                        <li>200 ml de Matte</li>
-                    </ul>
-                </div>
-            </details>
-            <details>
-                <summary>Limonada 🍋</summary>
-                <div class="recipe-content">
-                    <ul>
-                        <li>75 ml de Limão</li>
-                        <li>75 ml de Água</li>
-                        <li>25 ml de Gengibre</li>
-                        <li>25 ml de Xarope de Mel</li>
-                        <li>5 folhas de Hortelã</li>
-                    </ul>
-                </div>
-            </details>
+            <details><summary>Amora Mia 🍓</summary><div class="recipe-content"><ul><li>4 Morangos</li><li>4 Amoras</li><li>25 ml de Limão</li><li>15 ml de Açúcar</li><li>200 ml de Matte</li></ul></div></details>
+            <details><summary>Limonada 🍋</summary><div class="recipe-content"><ul><li>75 ml de Limão</li><li>75 ml de Água</li><li>25 ml de Gengibre</li><li>25 ml de Xarope de Mel</li><li>5 folhas de Hortelã</li></ul></div></details>
         </div>
 
-        <!-- 3. ABA ESTOQUE / LISTA DE COMPRAS -->
+        <!-- 3. ABA PREPAROS DO BAR -->
+        <div id="view-preps" class="view">
+            <div class="page-header">
+                <h2>Preparos do Bar</h2>
+                <p>Calculadora de rendimento e receitas base</p>
+            </div>
+
+            <!-- Xarope de Baunilha -->
+            <div class="calculator-card">
+                <h2>Xarope de Baunilha</h2>
+                <p class="obs">Bater o xarope normal no liquidificador, desligar e adicionar a baunilha.</p>
+                <div class="input-group">
+                    <label>Água base (ml)</label>
+                    <input type="number" id="prep-bau-agua" value="200" min="0" oninput="calcBaunilha()">
+                </div>
+                <div class="results-grid">
+                    <div class="result-box"><div class="result-title">Açúcar</div><div class="result-value"><span id="res-bau-acu">200</span> g</div></div>
+                    <div class="result-box"><div class="result-title">Baunilha</div><div class="result-value"><span id="res-bau-ess">20</span> ml</div></div>
+                </div>
+            </div>
+
+            <!-- Espuma de Baunilha -->
+            <div class="calculator-card">
+                <h2>Espuma de Baunilha</h2>
+                <p class="obs">Sifão: Juntar tudo, chacoalhar, por gás, geladeira 2h. Guardar deitado.</p>
+                <div class="input-group">
+                    <label>Xarope base (ml)</label>
+                    <input type="number" id="prep-esp-xar" value="250" min="0" oninput="calcEspuma()">
+                </div>
+                <div class="results-grid">
+                    <div class="result-box"><div class="result-title">Água</div><div class="result-value"><span id="res-esp-agu">250</span> ml</div></div>
+                    <div class="result-box"><div class="result-title">Emulsificante</div><div class="result-value"><span id="res-esp-emu">3</span> colh</div></div>
+                    <div class="result-box"><div class="result-title">Sal</div><div class="result-value"><span id="res-esp-sal">1</span> pit.</div></div>
+                </div>
+            </div>
+
+            <!-- Xarope de Morango -->
+            <div class="calculator-card">
+                <h2>Xarope de Morango</h2>
+                <div class="input-group">
+                    <label>Morango base (g)</label>
+                    <input type="number" id="prep-mor-mor" value="600" min="0" oninput="calcMorango()">
+                </div>
+                <div class="results-grid">
+                    <div class="result-box"><div class="result-title">Água</div><div class="result-value"><span id="res-mor-agu">300</span> ml</div></div>
+                    <div class="result-box"><div class="result-title">Açúcar</div><div class="result-value"><span id="res-mor-acu">300</span> g</div></div>
+                </div>
+            </div>
+
+            <!-- Xarope de Missô -->
+            <div class="calculator-card">
+                <h2>Xarope de Missô</h2>
+                <div class="input-group">
+                    <label>Maracujá base (g)</label>
+                    <input type="number" id="prep-mis-mar" value="300" min="0" oninput="calcMisso()">
+                </div>
+                <div class="results-grid">
+                    <div class="result-box"><div class="result-title">Açúcar</div><div class="result-value"><span id="res-mis-acu">200</span> g</div></div>
+                    <div class="result-box"><div class="result-title">Água</div><div class="result-value"><span id="res-mis-agu">200</span> ml</div></div>
+                    <div class="result-box"><div class="result-title">Missô</div><div class="result-value"><span id="res-mis-mis">3</span> colh</div></div>
+                </div>
+            </div>
+
+            <!-- Cachaça com Azeite -->
+            <div class="calculator-card">
+                <h2>Cachaça Infusionada</h2>
+                <p class="obs">Misturar bem e congelar deitado no freezer para separar.</p>
+                <div class="input-group">
+                    <label>Cachaça base (ml)</label>
+                    <input type="number" id="prep-cac-cac" value="500" min="0" oninput="calcCachaca()">
+                </div>
+                <div class="results-grid full">
+                    <div class="result-box"><div class="result-title">Azeite</div><div class="result-value"><span id="res-cac-aze">250</span> ml</div></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 4. ABA ESTOQUE / LISTA DE COMPRAS -->
         <div id="view-shopping" class="view">
             <div class="page-header">
                 <h2>Controle de Estoque</h2>
@@ -398,7 +345,7 @@
             <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Estoque/Compras</button>
         </div>
 
-        <!-- 4. ABA DE CALCULADORA SUPER SUCO -->
+        <!-- 5. ABA DE CALCULADORA SUPER SUCO -->
         <div id="view-calculator" class="view">
             <div class="calculator-card">
                 <h2>Super Suco</h2>
@@ -421,24 +368,28 @@
             </div>
         </div>
 
-        <!-- 5. ABA DE PRÉ-BATCH -->
+        <!-- 6. ABA DE PRÉ-BATCH -->
         <div id="view-batch" class="view">
             <div class="calculator-card">
                 <h2>Pré-Batch Drinks</h2>
                 <div class="input-group">
                     <label for="batch-drink">Drink Base</label>
-                    <select id="batch-drink">
+                    <select id="batch-drink" onchange="calculateBatch()">
                         <option value="cynar_cachaca">Cynar Sour</option>
+                        <option value="saladinha">Saladinha</option>
+                        <option value="velvet">Velvet</option>
+                        <option value="tinto_verao">Tinto de Verão</option>
+                        <option value="la_isla">La Isla Bonita</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label for="batch-volume">Volume total desejado (ml)</label>
-                    <input type="number" id="batch-volume" placeholder="Ex: 1000 para 1 Litro" min="0">
+                    <input type="number" id="batch-volume" placeholder="Ex: 1000 para 1 Litro" min="0" oninput="calculateBatch()">
                 </div>
-                <div class="results-grid">
-                    <div class="result-box"><div class="result-title">Cynar</div><div class="result-value"><span id="batch-ing1">0</span> ml</div></div>
-                    <div class="result-box"><div class="result-title">Cachaça</div><div class="result-value"><span id="batch-ing2">0</span> ml</div></div>
-                    <div class="result-box"><div class="result-title">Mel</div><div class="result-value"><span id="batch-ing3">0</span> ml</div></div>
+                
+                <!-- Resultados Dinâmicos -->
+                <div class="results-grid full" id="batch-results-container">
+                    <!-- Gerado pelo JS -->
                 </div>
             </div>
         </div>
@@ -448,36 +399,28 @@
     <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
     <div id="bottom-bar" class="bottom-nav" style="display: none;">
         <button class="btn-home" onclick="changeView('home')">🏠 Início</button>
-        <button id="btn-next" class="btn-next" onclick="goNext()">Próximo ➡️</button>
+        <button id="btn-next" class="btn-next" onclick="goNext()">Próximo ➡️️</button>
     </div>
 
     <!-- SCRIPTS -->
     <script>
-        // Ordem sequencial das abas
-        const viewOrder = ['home', 'manual', 'recipes', 'shopping', 'calculator', 'batch'];
+        // --- NAVEGAÇÃO ---
+        const viewOrder = ['home', 'manual', 'recipes', 'preps', 'shopping', 'calculator', 'batch'];
         let currentViewIndex = 0;
 
         function changeView(viewId) {
-            // Esconde todas as telas
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-            
-            // Mostra a selecionada e sobe pro topo
             document.getElementById('view-' + viewId).classList.add('active');
             window.scrollTo(0, 0);
 
-            // Atualiza o índice atual
             currentViewIndex = viewOrder.indexOf(viewId);
-
-            // Controle da barra de baixo
             const bottomBar = document.getElementById('bottom-bar');
             const btnNext = document.getElementById('btn-next');
 
             if (viewId === 'home') {
-                bottomBar.style.display = 'none'; // Esconde na home
+                bottomBar.style.display = 'none';
             } else {
-                bottomBar.style.display = 'flex'; // Mostra nas internas
-                
-                // Se for a última aba (Pré-Batch), muda o texto do botão avançar ou desativa
+                bottomBar.style.display = 'flex';
                 if (currentViewIndex === viewOrder.length - 1) {
                     btnNext.disabled = true;
                     btnNext.textContent = "Fim ✅";
@@ -494,16 +437,38 @@
             }
         }
 
-        // --- Super Suco ---
-        const lemonType = document.getElementById('lemon-type');
-        const peelWeight = document.getElementById('peel-weight');
-        const citricRes = document.getElementById('citric-res');
-        const malicRes = document.getElementById('malic-res');
-        const waterRes = document.getElementById('water-res');
+        // --- PREPAROS DO BAR (Cálculos) ---
+        function calcBaunilha() {
+            const v = parseFloat(document.getElementById('prep-bau-agua').value) || 0;
+            document.getElementById('res-bau-acu').textContent = Math.round(v * 1);
+            document.getElementById('res-bau-ess').textContent = Math.round(v * 0.1);
+        }
+        function calcEspuma() {
+            const v = parseFloat(document.getElementById('prep-esp-xar').value) || 0;
+            document.getElementById('res-esp-agu').textContent = Math.round(v * 1);
+            document.getElementById('res-esp-emu').textContent = (v / 250 * 3).toFixed(1);
+            document.getElementById('res-esp-sal').textContent = (v / 250 * 1).toFixed(1);
+        }
+        function calcMorango() {
+            const v = parseFloat(document.getElementById('prep-mor-mor').value) || 0;
+            document.getElementById('res-mor-agu').textContent = Math.round(v * 0.5);
+            document.getElementById('res-mor-acu').textContent = Math.round(v * 0.5);
+        }
+        function calcMisso() {
+            const v = parseFloat(document.getElementById('prep-mis-mar').value) || 0;
+            document.getElementById('res-mis-acu').textContent = Math.round(v * 0.6666);
+            document.getElementById('res-mis-agu').textContent = Math.round(v * 0.6666);
+            document.getElementById('res-mis-mis').textContent = (v / 300 * 3).toFixed(1);
+        }
+        function calcCachaca() {
+            const v = parseFloat(document.getElementById('prep-cac-cac').value) || 0;
+            document.getElementById('res-cac-aze').textContent = Math.round(v * 0.5);
+        }
 
+        // --- Super Suco ---
         function calculateSuperJuice() {
-            const weight = parseFloat(peelWeight.value) || 0;
-            const type = lemonType.value;
+            const weight = parseFloat(document.getElementById('peel-weight').value) || 0;
+            const type = document.getElementById('lemon-type').value;
             let citric = 0, malic = 0, water = 0;
 
             if (weight > 0) {
@@ -513,51 +478,58 @@
                     citric = weight * 1.0; malic = 0; water = weight * 16.66;
                 }
             }
-            citricRes.textContent = citric.toFixed(2);
-            malicRes.textContent = malic.toFixed(2);
-            waterRes.textContent = Math.round(water);
+            document.getElementById('citric-res').textContent = citric.toFixed(2);
+            document.getElementById('malic-res').textContent = malic.toFixed(2);
+            document.getElementById('water-res').textContent = Math.round(water);
         }
-        peelWeight.addEventListener('input', calculateSuperJuice);
-        lemonType.addEventListener('change', calculateSuperJuice);
+        document.getElementById('peel-weight').addEventListener('input', calculateSuperJuice);
+        document.getElementById('lemon-type').addEventListener('change', calculateSuperJuice);
 
-        // --- Pré-Batch ---
-        const batchDrink = document.getElementById('batch-drink');
-        const batchVolume = document.getElementById('batch-volume');
-        const batchIng1 = document.getElementById('batch-ing1');
-        const batchIng2 = document.getElementById('batch-ing2');
-        const batchIng3 = document.getElementById('batch-ing3');
+        // --- Pré-Batch Dinâmico ---
+        const batchRecipes = {
+            cynar_cachaca: { total: 125, ing: { "Cynar": 50, "Cachaça": 50, "Mel": 25 } },
+            saladinha: { total: 140, ing: { "Cachaça c/ Azeite": 50, "Xpe Missô c/ Maracujá": 50, "Limão Taiti": 20, "Açúcar": 10, "Água (Diluição)": 10 } },
+            velvet: { total: 165, ing: { "Vodka": 60, "Xarope Morango": 60, "Limão Siciliano": 20, "Açúcar": 15, "Água (Diluição)": 10 } },
+            tinto_verao: { total: 135, ing: { "Vinho": 100, "Triple Sec": 25, "Limão Siciliano": 10 } }, // Soda excluída do batch
+            la_isla: { total: 145, ing: { "Rum Ouro": 60, "Xarope Abacaxi": 50, "Malibu": 15, "Açúcar": 10, "Água (Diluição)": 10 } }
+        };
 
         function calculateBatch() {
-            const vol = parseFloat(batchVolume.value) || 0;
-            const drink = batchDrink.value;
-            let ing1 = 0, ing2 = 0, ing3 = 0;
+            const vol = parseFloat(document.getElementById('batch-volume').value) || 0;
+            const drinkId = document.getElementById('batch-drink').value;
+            const container = document.getElementById('batch-results-container');
+            container.innerHTML = ''; // Limpa os resultados antigos
 
-            if (vol > 0 && drink === 'cynar_cachaca') {
-                ing1 = vol * 0.40;
-                ing2 = vol * 0.40;
-                ing3 = vol * 0.20;
+            if (vol > 0 && batchRecipes[drinkId]) {
+                const recipe = batchRecipes[drinkId];
+                for (const [name, amount] of Object.entries(recipe.ing)) {
+                    const proportion = amount / recipe.total;
+                    const finalAmount = Math.round(vol * proportion);
+                    
+                    container.innerHTML += `
+                        <div class="result-box">
+                            <div class="result-title">${name}</div>
+                            <div class="result-value"><span>${finalAmount}</span> ml</div>
+                        </div>
+                    `;
+                }
             }
-            batchIng1.textContent = Math.round(ing1);
-            batchIng2.textContent = Math.round(ing2);
-            batchIng3.textContent = Math.round(ing3);
         }
-        batchVolume.addEventListener('input', calculateBatch);
-        batchDrink.addEventListener('change', calculateBatch);
 
         // --- Estoque / Lista de Compras ---
         const items = [
             "Afiador de faca", "Água", "Água com gás", "Água Tônica", "Álcool", "Álcool 70%",
-            "Amora congelada", "Açúcar", "Açúcar mascavo", "Balde", "Bobina", "Bourbon", 
-            "Café", "Campari", "Canela", "Canelinha", "Cerveja", "Cerveja zero", "Copo americano", 
+            "Alecrim", "Amora congelada", "Azeite", "Açúcar", "Açúcar mascavo", "Balde", "Baunilha", "Bobina", "Bourbon", 
+            "Café", "Campari", "Canela", "Canelinha", "Cerveja", "Cerveja zero", "Coco tostado", "Copo americano", 
             "Copo americano grande", "Copo baixo", "Copo de dose", "Copo plástico", "Coqueteleira", 
-            "Cravo", "Cynar", "Cândida", "Desinfetante", "Detergente", "Essência de baunilha", 
+            "Cravo", "Cynar", "Cândida", "Desinfetante", "Detergente", "Emulsificante", "Essência de baunilha", 
             "Faca", "Filtro de papel", "Gabriela", "Gelo", "Gengibre", "Gin", "Guardanapo", 
             "Hibisco", "Hortelã", "Interfolha", "Jambu", "Kariri", "Laranja", "Limão Cravo", 
-            "Limão Siciliano", "Limão Taiti", "Maracujá", "Mate", "Maçã", "Mel", "Molho de romã", 
+            "Limão Siciliano", "Limão Taiti", "Malibu", "Maracujá", "Mate", "Maçã", "Mel", "Missô", "Molho de romã", 
             "Morango congelado", "Noz pecã", "Palito de kariri", "Palito pequeno", "Pano de balcão", 
             "Pano de chão", "Papel higiênico", "Peneira", "Perflex", "Rapadura", "Red Bull", 
-            "Refrigerante", "Rum", "Sakê", "Salinas", "Seleta", "Strainer", "Tábua", "Velho Barreiro", 
-            "Vodka", "Xarope de romã", "Ácido cítrico", "Ácido málico"
+            "Refrigerante", "Rum", "Rum Ouro", "Sakê", "Sal", "Salinas", "Seleta", "Soda", "Strainer", "Triple Sec", "Tábua", "Velho Barreiro", 
+            "Vinho", "Vodka", "Xarope de abacaxi", "Xarope de morango", "Xarope de romã", "Ácido cítrico", "Ácido málico"
         ];
 
         items.sort((a, b) => a.localeCompare(b, 'pt-BR'));
