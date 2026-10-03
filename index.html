@@ -152,6 +152,10 @@
         .order-toggle input[type="checkbox"] { width: 20px; height: 20px; margin-bottom: 4px; accent-color: var(--primary-red); cursor: pointer; }
         .btn-action { width: 100%; padding: 16px; background-color: var(--primary-red); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
 
+        /* UTILITARIOS */
+        .prep-card { display: none; }
+        .prep-card.active { display: block; animation: fadeIn 0.3s ease; }
+
     </style>
 </head>
 <body>
@@ -244,13 +248,13 @@
             <details><summary>Caipirinha de Jambu 🍹</summary><div class="recipe-content"><ul><li>1/2 Limão Siciliano</li><li>1/2 Limão Taiti</li><li>1/2 Limão Cravo</li><li>25 ml de Xarope de Rapadura</li><li>75 ml de Jambu</li></ul><div class="obs"><strong>Finalização:</strong> Finalizar com rapadura e limão.<br><strong>Obs:</strong> Caipirinha não é necessário gelo no copo.</div></div></details>
             <details><summary>Chá Pirata 🏴‍☠️</summary><div class="recipe-content"><ul><li>75 ml de Rum Branco</li><li>25 ml de Limão Taiti</li><li>15 ml de Açúcar</li><li>3 colheres bailarinas de Maracujá</li><li>8 folhas de Hortelã</li><li>150 ml de Matte</li></ul><div class="obs"><strong>Finalização:</strong> Finalizar com hortelã.</div></div></details>
             <details><summary>Kariri com Mel 🍯</summary><div class="recipe-content"><ul><li>25 ml de Limão Taiti</li><li>25 ml de Gengibre</li><li>225 ml de Kariri</li></ul><div class="obs"><strong>Preparo:</strong> Servir no copo de plástico.</div></div></details>
-            <details><summary>La Isla Bonita 🥥</summary><div class="recipe-content"><ul><li>60 ml de Rum Ouro</li><li>50 ml de Xarope de Abacaxi</li><li>15 ml de Malibu</li><li>10 ml de Açúcar</li></ul><div class="obs"><strong>Preparo:</strong> Copo Baixo.<br><strong>Guarnição:</strong> Coco tostado.</div></div></details>
+            <details><summary>La Isla Bonita 🥥</summary><div class="recipe-content"><ul><li>60 ml de Rum Ouro</li><li>50 ml de Xarope de Abacaxi</li><li>15 ml de Malibu</li><li>10 ml de Açúcar</li></ul><div class="obs"><strong>Preparo:</strong> 150ml do drink já pronto na garrafa servido no copo baixo com gelo.<br><strong>Guarnição:</strong> Coco tostado.</div></div></details>
             <details><summary>Negroni 🥃</summary><div class="recipe-content"><ul><li>120 ml de Negroni já pronto</li></ul><div class="obs"><strong>Preparo:</strong> Diluir na coqueteleira. Passar pro copo baixo com gelo grande.<br><strong>Finalização:</strong> Torcer um pedaço da casca da laranja e jogar no copo.</div></div></details>
             <details><summary>Romase 🍹</summary><div class="recipe-content"><ul><li>100 ml do Batch</li><li>15 ml de Sour mix</li><li>Completar com Água com gás</li></ul><div class="obs"><strong>Preparo:</strong> Copo longo.</div></div></details>
-            <details><summary>Saladinha 🌿</summary><div class="recipe-content"><ul><li>50 ml de Cachaça com Azeite</li><li>50 ml de Xarope de Missô com Maracujá</li><li>20 ml de Limão Taiti</li><li>10 ml de Açúcar</li></ul><div class="obs"><strong>Preparo:</strong> Copo Baixo.<br><strong>Guarnição:</strong> Ramo de alecrim.</div></div></details>
+            <details><summary>Saladinha 🌿</summary><div class="recipe-content"><ul><li>50 ml de Cachaça com Azeite</li><li>50 ml de Xarope de Missô com Maracujá</li><li>20 ml de Limão Taiti</li><li>10 ml de Açúcar</li></ul><div class="obs"><strong>Preparo:</strong> 150ml do drink já pronto na garrafa servido no copo baixo com gelo.<br><strong>Guarnição:</strong> Ramo de alecrim.</div></div></details>
             <details><summary>Tinto de Verão 🍷</summary><div class="recipe-content"><ul><li>100 ml de Vinho</li><li>25 ml de Triple Sec</li><li>10 ml de Limão Siciliano</li><li>Completar com Soda (~70ml)</li></ul><div class="obs"><strong>Preparo:</strong> Copo Americano Grande.<br><strong>Guarnição:</strong> Meia lua de laranja.</div></div></details>
             <details><summary>Torta de Maçã 🍎</summary><div class="recipe-content"><ul><li>50 ml de Bourbon</li><li>45 ml de Purê de maçã</li><li>20 ml de Sour mix</li></ul></div></details>
-            <details><summary>Velvet 🍓</summary><div class="recipe-content"><ul><li>60 ml de Vodka</li><li>60 ml de Xarope de Morango</li><li>20 ml de Limão Siciliano</li><li>15 ml de Açúcar</li></ul><div class="obs"><strong>Preparo:</strong> Copo Baixo.<br><strong>Guarnição:</strong> Espuma de baunilha do sifão e raspas de limão siciliano.</div></div></details>
+            <details><summary>Velvet 🍓</summary><div class="recipe-content"><ul><li>60 ml de Vodka</li><li>60 ml de Xarope de Morango</li><li>20 ml de Limão Siciliano</li><li>15 ml de Açúcar</li></ul><div class="obs"><strong>Preparo:</strong> 150ml do drink já pronto na garrafa servido no copo baixo com gelo.<br><strong>Guarnição:</strong> Espuma de baunilha do sifão e raspas de limão siciliano.</div></div></details>
 
             <h2 class="category-title">Sem Álcool</h2>
             <details><summary>Amora Mia 🍓</summary><div class="recipe-content"><ul><li>4 Morangos</li><li>4 Amoras</li><li>25 ml de Limão</li><li>15 ml de Açúcar</li><li>200 ml de Matte</li></ul></div></details>
@@ -264,8 +268,20 @@
                 <p>Calculadora de rendimento e receitas base</p>
             </div>
 
+            <!-- Selector de Preparos -->
+            <div class="input-group">
+                <label for="prep-selector">Selecione o preparo:</label>
+                <select id="prep-selector" onchange="changePrepView()">
+                    <option value="bau">Xarope de Baunilha</option>
+                    <option value="esp">Espuma de Baunilha</option>
+                    <option value="mor">Xarope de Morango</option>
+                    <option value="mis">Xarope de Missô</option>
+                    <option value="cac">Cachaça Infusionada</option>
+                </select>
+            </div>
+
             <!-- Xarope de Baunilha -->
-            <div class="calculator-card">
+            <div id="prep-bau" class="calculator-card prep-card active">
                 <h2>Xarope de Baunilha</h2>
                 <p class="obs">Bater o xarope normal no liquidificador, desligar e adicionar a baunilha.</p>
                 <div class="input-group">
@@ -279,7 +295,7 @@
             </div>
 
             <!-- Espuma de Baunilha -->
-            <div class="calculator-card">
+            <div id="prep-esp" class="calculator-card prep-card">
                 <h2>Espuma de Baunilha</h2>
                 <p class="obs">Sifão: Juntar tudo, chacoalhar, por gás, geladeira 2h. Guardar deitado.</p>
                 <div class="input-group">
@@ -294,7 +310,7 @@
             </div>
 
             <!-- Xarope de Morango -->
-            <div class="calculator-card">
+            <div id="prep-mor" class="calculator-card prep-card">
                 <h2>Xarope de Morango</h2>
                 <div class="input-group">
                     <label>Morango base (g)</label>
@@ -307,7 +323,7 @@
             </div>
 
             <!-- Xarope de Missô -->
-            <div class="calculator-card">
+            <div id="prep-mis" class="calculator-card prep-card">
                 <h2>Xarope de Missô</h2>
                 <div class="input-group">
                     <label>Maracujá base (g)</label>
@@ -321,7 +337,7 @@
             </div>
 
             <!-- Cachaça com Azeite -->
-            <div class="calculator-card">
+            <div id="prep-cac" class="calculator-card prep-card">
                 <h2>Cachaça Infusionada</h2>
                 <p class="obs">Misturar bem e congelar deitado no freezer para separar.</p>
                 <div class="input-group">
@@ -404,7 +420,7 @@
 
     <!-- SCRIPTS -->
     <script>
-        // --- NAVEGAÇÃO ---
+        // --- NAVEGAÇÃO PRINCIPAL ---
         const viewOrder = ['home', 'manual', 'recipes', 'preps', 'shopping', 'calculator', 'batch'];
         let currentViewIndex = 0;
 
@@ -435,6 +451,13 @@
             if (currentViewIndex < viewOrder.length - 1) {
                 changeView(viewOrder[currentViewIndex + 1]);
             }
+        }
+
+        // --- NAVEGAÇÃO DOS PREPAROS (Dropdown) ---
+        function changePrepView() {
+            const selected = document.getElementById('prep-selector').value;
+            document.querySelectorAll('.prep-card').forEach(el => el.classList.remove('active'));
+            document.getElementById('prep-' + selected).classList.add('active');
         }
 
         // --- PREPAROS DO BAR (Cálculos) ---
