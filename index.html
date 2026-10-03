@@ -399,7 +399,7 @@
     <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
     <div id="bottom-bar" class="bottom-nav" style="display: none;">
         <button class="btn-home" onclick="changeView('home')">🏠 Início</button>
-        <button id="btn-next" class="btn-next" onclick="goNext()">Próximo ➡️️</button>
+        <button id="btn-next" class="btn-next" onclick="goNext()">Próximo ➡</button>
     </div>
 
     <!-- SCRIPTS -->
@@ -485,12 +485,12 @@
         document.getElementById('peel-weight').addEventListener('input', calculateSuperJuice);
         document.getElementById('lemon-type').addEventListener('change', calculateSuperJuice);
 
-        // --- Pré-Batch Dinâmico ---
+        // --- Pré-Batch Dinâmico (Arredondado para múltiplos de 5) ---
         const batchRecipes = {
             cynar_cachaca: { total: 125, ing: { "Cynar": 50, "Cachaça": 50, "Mel": 25 } },
             saladinha: { total: 140, ing: { "Cachaça c/ Azeite": 50, "Xpe Missô c/ Maracujá": 50, "Limão Taiti": 20, "Açúcar": 10, "Água (Diluição)": 10 } },
             velvet: { total: 165, ing: { "Vodka": 60, "Xarope Morango": 60, "Limão Siciliano": 20, "Açúcar": 15, "Água (Diluição)": 10 } },
-            tinto_verao: { total: 135, ing: { "Vinho": 100, "Triple Sec": 25, "Limão Siciliano": 10 } }, // Soda excluída do batch
+            tinto_verao: { total: 135, ing: { "Vinho": 100, "Triple Sec": 25, "Limão Siciliano": 10 } },
             la_isla: { total: 145, ing: { "Rum Ouro": 60, "Xarope Abacaxi": 50, "Malibu": 15, "Açúcar": 10, "Água (Diluição)": 10 } }
         };
 
@@ -498,13 +498,16 @@
             const vol = parseFloat(document.getElementById('batch-volume').value) || 0;
             const drinkId = document.getElementById('batch-drink').value;
             const container = document.getElementById('batch-results-container');
-            container.innerHTML = ''; // Limpa os resultados antigos
+            container.innerHTML = ''; 
 
             if (vol > 0 && batchRecipes[drinkId]) {
                 const recipe = batchRecipes[drinkId];
                 for (const [name, amount] of Object.entries(recipe.ing)) {
                     const proportion = amount / recipe.total;
-                    const finalAmount = Math.round(vol * proportion);
+                    const rawAmount = vol * proportion;
+                    
+                    // ARREDONDAMENTO PARA MÚLTIPLOS DE 5 OU 0
+                    const finalAmount = Math.round(rawAmount / 5) * 5;
                     
                     container.innerHTML += `
                         <div class="result-box">
