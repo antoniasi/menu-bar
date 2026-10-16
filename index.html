@@ -99,7 +99,17 @@
         .qty-input:focus { outline: none; border-color: var(--primary-red); }
         .order-toggle { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #aaa; cursor: pointer; }
         .order-toggle input[type="checkbox"] { width: 20px; height: 20px; margin-bottom: 4px; accent-color: var(--primary-red); cursor: pointer; }
-        .btn-action { width: 100%; padding: 16px; background-color: var(--primary-red); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        
+        /* BOTÕES DAS AÇÕES DE ESTOQUE */
+        .action-button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .btn-action { width: 100%; padding: 16px; background-color: var(--primary-red); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .btn-action-secondary { background-color: #333; border: 1px solid #555; }
+        .btn-action-secondary:active { background-color: #111; }
 
         .prep-card { display: none; }
         .prep-card.active { display: block; animation: fadeIn 0.3s ease; }
@@ -113,7 +123,7 @@
         .btn-minus:active { background-color: var(--primary-red); border-color: var(--primary-red); }
         .btn-delete { background-color: transparent; color: #ffcccc; border: none; font-size: 13px; text-decoration: underline; cursor: pointer; padding: 0; }
 
-        /* --- TABELA DE VISUALIZAÇÃO DE ESTOQUE --- */
+        /* --- ESTILOS DA TABELA DE VISUALIZAÇÃO DE ESTOQUE --- */
         .stock-table-container {
             width: 100%;
             border-collapse: collapse;
@@ -122,6 +132,7 @@
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid #333;
+            margin-bottom: 25px;
         }
 
         .stock-table-container th, .stock-table-container td {
@@ -183,7 +194,7 @@
                     <button class="menu-btn" onclick="changeView('recipes')">🍹 Receitas</button>
                     <button class="menu-btn" onclick="changeView('preps')">🥣 Preparos do Bar</button>
                     <button class="menu-btn" onclick="changeView('prep-control')">🏷️ Controle de Insumos</button>
-                    <button class="menu-btn" onclick="changeView('stock-table')">📊 Tabela de Estoque</button>
+                    <button class="menu-btn" onclick="changeView('stock-table')">📊 Consulta de Estoque</button>
                     <button class="menu-btn" onclick="changeView('shopping')">📦 Contagem & Pedidos</button>
                     <button class="menu-btn" onclick="changeView('calculator')">🍋 Super Suco</button>
                     <button class="menu-btn" onclick="changeView('batch')">🧪 Pré-Batch Drinks</button>
@@ -393,11 +404,11 @@
             <div id="lotes-container"></div>
         </div>
 
-        <!-- 5. ABA TABELA DE VISUALIZAÇÃO DE ESTOQUE (NOVA) -->
+        <!-- 5. ABA CONSULTA DE ESTOQUE (TABELA SIMPLES) -->
         <div id="view-stock-table" class="view">
             <div class="page-header">
-                <h2>Tabela de Estoque</h2>
-                <p>Consulta rápida de saldo em tempo real durante o serviço.</p>
+                <h2>Consulta de Estoque</h2>
+                <p>Tabela para visualização rápida dos itens e saldos em tempo real.</p>
             </div>
             
             <div id="db-status-tabela"></div>
@@ -405,6 +416,8 @@
             <div class="input-group">
                 <input type="text" id="search-stock-input" placeholder="🔍 Buscar item (ex: Vodka, Gelo, Copo)..." onkeyup="filtrarTabelaEstoque()">
             </div>
+
+            <button class="btn-action" style="margin-bottom: 15px;" onclick="copyFullStockToWhatsApp()">📲 Copiar Estoque Completo (WhatsApp)</button>
 
             <table class="stock-table-container">
                 <thead>
@@ -423,14 +436,41 @@
         <!-- 6. ABA CONTAGEM & PEDIDOS (DB) -->
         <div id="view-shopping" class="view">
             <div class="page-header">
-                <h2>Contagem & Pedidos</h2>
-                <p>Atualize os saldos no fechamento e marque os itens para a lista do WhatsApp.</p>
+                <h2>Contag. & Pedidos</h2>
+                <p>Atualize os saldos ou cadastre novos itens avulsos para o estoque do bar.</p>
             </div>
             
             <div id="db-status-estoque"></div>
 
+            <!-- BLOCO DE CADASTRO LIVRE DE ITEM NOVO -->
+            <div class="calculator-card" style="margin-bottom: 20px;">
+                <h2>➕ Cadastrar Novo Item no Estoque</h2>
+                <div class="input-group">
+                    <label>Nome do Item</label>
+                    <input type="text" id="novo-item-nome" placeholder="Ex: Guardanapo de Papel, Whisky X...">
+                </div>
+                <div class="results-grid">
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Quantidade</label>
+                        <input type="number" id="novo-item-qtd" placeholder="Ex: 5" min="0">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <label class="order-toggle" style="margin-top: 15px;">
+                            <input type="checkbox" id="novo-item-pedir">
+                            Marcar 'Pedir'
+                        </label>
+                    </div>
+                </div>
+                <button class="btn-action" style="margin-top: 15px; margin-bottom: 0;" onclick="cadastrarNovoItemEstoqueDB()">➕ Adicionar ao Estoque</button>
+            </div>
+
+            <h2 class="category-title">Itens Registrados</h2>
             <div class="checklist-container" id="checklist"></div>
-            <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Relatório WhatsApp</button>
+            
+            <div class="action-button-group">
+                <button class="btn-action btn-action-secondary" onclick="salvarApenasEstoqueDB()">💾 Atualizar Apenas Estoque</button>
+                <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Lista WhatsApp</button>
+            </div>
         </div>
 
         <!-- 7. ABA DE CALCULADORA SUPER SUCO -->
@@ -610,7 +650,7 @@
         }
 
         // --- ESTOQUE GERAL DO BAR ONLINE (DB) ---
-        const itemsEstoque = [
+        let itemsEstoque = [
             "Afiador de faca", "Água", "Água com gás", "Água Tônica", "Álcool", "Álcool 70%",
             "Alecrim", "Amora congelada", "Azeite", "Açúcar", "Açúcar mascavo", "Balde", "Baunilha", "Bobina", "Bourbon", 
             "Café", "Campari", "Canela", "Canelinha", "Cerveja", "Cerveja zero", "Coco tostado", "Copo americano", 
@@ -628,6 +668,7 @@
 
         function initEstoqueUI() {
             const container = document.getElementById('checklist');
+            container.innerHTML = '';
             itemsEstoque.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'inventory-item';
@@ -651,15 +692,60 @@
             const { data, error } = await sb.from('estoque').select('*');
             document.getElementById('db-status-estoque').textContent = "";
             if (data) {
+                // Adiciona itens novos vindos do banco que não estavam na lista inicial
+                data.forEach(row => {
+                    if (!itemsEstoque.includes(row.item)) {
+                        itemsEstoque.push(row.item);
+                    }
+                });
+                itemsEstoque.sort((a, b) => a.localeCompare(b, 'pt-BR'));
+                initEstoqueUI();
+
                 data.forEach(row => {
                     const index = itemsEstoque.indexOf(row.item);
                     if (index !== -1) {
                         const qtyInput = document.getElementById(`qty-${index}`);
                         const orderCheck = document.getElementById(`order-${index}`);
-                        if (row.qtd !== null) qtyInput.value = row.qtd;
-                        if (row.pedir !== null) orderCheck.checked = row.pedir;
+                        if (row.qtd !== null && qtyInput) qtyInput.value = row.qtd;
+                        if (row.pedir !== null && orderCheck) orderCheck.checked = row.pedir;
                     }
                 });
+            }
+        }
+
+        async function cadastrarNovoItemEstoqueDB() {
+            const nomeInput = document.getElementById('novo-item-nome');
+            const qtdInput = document.getElementById('novo-item-qtd');
+            const pedirCheck = document.getElementById('novo-item-pedir');
+
+            const nome = nomeInput.value.trim();
+            const qtdVal = qtdInput.value;
+            const pedirVal = pedirCheck.checked;
+
+            if (!nome) {
+                alert("Digite o nome do item a ser cadastrado!");
+                return;
+            }
+
+            let qtdFinal = qtdVal === "" ? null : parseFloat(qtdVal);
+
+            document.getElementById('db-status-estoque').textContent = "Cadastrando item no Supabase...";
+            const { error } = await sb.from('estoque').upsert({ item: nome, qtd: qtdFinal, pedir: pedirVal });
+            document.getElementById('db-status-estoque').textContent = "";
+
+            if (!error) {
+                if (!itemsEstoque.includes(nome)) {
+                    itemsEstoque.push(nome);
+                    itemsEstoque.sort((a, b) => a.localeCompare(b, 'pt-BR'));
+                }
+                nomeInput.value = '';
+                qtdInput.value = '';
+                pedirCheck.checked = false;
+                
+                await carregarEstoqueDB();
+                alert(`Item "${nome}" cadastrado com sucesso no estoque!`);
+            } else {
+                alert("Erro ao cadastrar novo item no banco.");
             }
         }
 
@@ -672,6 +758,12 @@
             document.getElementById('db-status-tabela').textContent = "";
             if (data) {
                 dadosEstoqueCompleto = data;
+                data.forEach(row => {
+                    if (!itemsEstoque.includes(row.item)) {
+                        itemsEstoque.push(row.item);
+                    }
+                });
+                itemsEstoque.sort((a, b) => a.localeCompare(b, 'pt-BR'));
             } else {
                 dadosEstoqueCompleto = [];
             }
@@ -717,9 +809,53 @@
             });
         }
 
+        function copyFullStockToWhatsApp() {
+            let fullStockText = "📊 *Relatório Geral de Estoque - Red Light Bar*\n\n";
+            let totalItensContados = 0;
+
+            itemsEstoque.forEach(itemNome => {
+                const encontrado = dadosEstoqueCompleto.find(d => d.item === itemNome);
+                const qtd = (encontrado && encontrado.qtd !== null) ? encontrado.qtd : null;
+                const pedir = (encontrado && encontrado.pedir) ? true : false;
+
+                if (qtd !== null || pedir) {
+                    const statusText = pedir ? " ⚠️ (PEDIR)" : "";
+                    fullStockText += `- *${itemNome}*: ${qtd !== null ? qtd : 0}${statusText}\n`;
+                    totalItensContados++;
+                }
+            });
+
+            if (totalItensContados === 0) {
+                alert('Nenhum item com quantidade salva no banco para copiar!');
+                return;
+            }
+
+            navigator.clipboard.writeText(fullStockText).then(() => {
+                alert('Estoque completo copiado! Pronto para colar no WhatsApp.');
+            }).catch(err => alert('Erro ao copiar relatório.'));
+        }
+
         async function salvarItemEstoqueDB(nomeItem, qtdVal, pedirVal) {
             let qtdFinal = qtdVal === "" ? null : parseFloat(qtdVal);
             await sb.from('estoque').upsert({ item: nomeItem, qtd: qtdFinal, pedir: pedirVal });
+        }
+
+        async function salvarApenasEstoqueDB() {
+            document.getElementById('db-status-estoque').textContent = "Salvando dados no Supabase...";
+            const promises = [];
+            itemsEstoque.forEach((item, index) => {
+                const qtyInput = document.getElementById(`qty-${index}`) ? document.getElementById(`qty-${index}`).value : "";
+                const orderChecked = document.getElementById(`order-${index}`) ? document.getElementById(`order-${index}`).checked : false;
+                let qtdFinal = qtyInput === "" ? null : parseFloat(qtyInput);
+
+                if (qtdFinal !== null || orderChecked) {
+                    promises.push(sb.from('estoque').upsert({ item: item, qtd: qtdFinal, pedir: orderChecked }));
+                }
+            });
+
+            await Promise.all(promises);
+            document.getElementById('db-status-estoque').textContent = "";
+            alert('Estoque atualizado com sucesso no banco!');
         }
 
         function copyShoppingList() {
@@ -729,8 +865,8 @@
             let hasOrder = false;
 
             itemsEstoque.forEach((item, index) => {
-                const qtyInput = document.getElementById(`qty-${index}`).value;
-                const orderChecked = document.getElementById(`order-${index}`).checked;
+                const qtyInput = document.getElementById(`qty-${index}`) ? document.getElementById(`qty-${index}`).value : "";
+                const orderChecked = document.getElementById(`order-${index}`) ? document.getElementById(`order-${index}`).checked : false;
                 if (qtyInput !== "" || orderChecked) {
                     const qty = qtyInput === "" ? null : parseFloat(qtyInput);
                     if (qty !== null && qty > 0) { stockText += `- ${item}: ${qty}\n`; hasStock = true; }
