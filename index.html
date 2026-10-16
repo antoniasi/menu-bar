@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Red Light Bar</title>
+    <!-- BIBLIOTECA DO SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --bg-color: #121212;
@@ -16,91 +18,40 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            padding-bottom: 90px;
+            margin: 0; padding: 0; overflow-x: hidden; padding-bottom: 90px;
         }
 
-        /* --- CABEÇALHO FIXO --- */
         header {
-            background-color: var(--bg-color);
-            border-bottom: 3px solid var(--primary-red);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
+            background-color: var(--bg-color); border-bottom: 3px solid var(--primary-red);
+            padding: 15px 20px; display: flex; justify-content: center; align-items: center;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-            color: var(--primary-red);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 900;
-        }
+        header h1 { margin: 0; font-size: 24px; color: var(--primary-red); text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
 
-        /* --- CONTEÚDO PRINCIPAL --- */
-        main {
-            padding: 80px 15px 20px 15px; 
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
+        main { padding: 80px 15px 20px 15px; max-width: 600px; margin: 0 auto; }
         .view { display: none; }
         .view.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- TELA INICIAL (MENU) --- */
-        .home-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-        }
-
+        .home-container { display: flex; flex-direction: column; align-items: center; margin-top: 10px; }
         .logo-svg { width: 160px; height: 160px; margin-bottom: 25px; }
         .home-menu { width: 100%; display: flex; flex-direction: column; gap: 15px; }
-
         .menu-btn {
-            background-color: var(--secondary-bg);
-            border: 2px solid var(--primary-red);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-align: left;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            background-color: var(--secondary-bg); border: 2px solid var(--primary-red);
+            color: white; padding: 20px; border-radius: 12px; font-size: 18px; font-weight: bold;
+            text-transform: uppercase; text-align: left; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            display: flex; align-items: center; gap: 15px;
         }
         .menu-btn:active { background-color: var(--primary-red); }
 
-        /* --- NAVEGAÇÃO INFERIOR --- */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background-color: var(--secondary-bg); border-top: 2px solid #333;
             display: flex; padding: 15px; box-sizing: border-box; z-index: 1000; gap: 10px;
         }
-
         .bottom-nav button {
-            flex: 1; padding: 15px; border-radius: 8px; font-size: 16px;
-            font-weight: bold; text-transform: uppercase; border: none; cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            flex: 1; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; text-transform: uppercase; border: none; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         .btn-home { background-color: #333; color: white; border: 1px solid #555; }
         .btn-home:active { background-color: #111; }
@@ -108,7 +59,6 @@
         .btn-next:active { background-color: #cc0000; }
         .btn-next:disabled { background-color: #555; color: #888; }
 
-        /* --- ESTILOS GERAIS --- */
         .page-header { text-align: center; margin-bottom: 20px; }
         .page-header h2 { color: var(--primary-red); font-size: 22px; margin-bottom: 5px; text-transform: uppercase; }
         .page-header p { color: #aaa; font-size: 14px; margin-top: 0; line-height: 1.4; }
@@ -126,7 +76,6 @@
         .obs { font-style: italic; color: #aaa; font-size: 14px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #444; }
         .manual-alert { color: #ffcccc; font-weight: bold; }
 
-        /* CALCULADORAS E CARDS */
         .calculator-card { background-color: var(--secondary-bg); border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
         .calculator-card h2 { color: var(--primary-red); margin-top: 0; font-size: 18px; text-transform: uppercase; text-align: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
         .calculator-card .obs { border-top: none; padding-top: 0; margin-top: 0; margin-bottom: 15px; text-align: center; }
@@ -134,6 +83,7 @@
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #aaa; }
         .input-group select, .input-group input { width: 100%; padding: 12px; background-color: #121212; border: 1px solid #444; color: white; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
+        .input-group input[type="date"] { color-scheme: dark; }
         .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--primary-red); }
         .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .results-grid.full { grid-template-columns: 1fr; }
@@ -141,7 +91,6 @@
         .result-title { font-size: 13px; color: #aaa; margin-bottom: 5px; }
         .result-value { font-size: 20px; font-weight: bold; color: white; }
 
-        /* ESTOQUE E LISTA DE COMPRAS */
         .checklist-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
         .inventory-item { background-color: var(--secondary-bg); border: 1px solid #333; border-radius: 8px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
         .item-name { font-size: 16px; color: var(--text-color); flex-grow: 1; font-weight: 500; }
@@ -152,10 +101,19 @@
         .order-toggle input[type="checkbox"] { width: 20px; height: 20px; margin-bottom: 4px; accent-color: var(--primary-red); cursor: pointer; }
         .btn-action { width: 100%; padding: 16px; background-color: var(--primary-red); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
 
-        /* UTILITARIOS */
         .prep-card { display: none; }
         .prep-card.active { display: block; animation: fadeIn 0.3s ease; }
 
+        .batch-card { background-color: var(--secondary-bg); border-left: 4px solid var(--primary-red); border-radius: 4px; padding: 15px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px; }
+        .batch-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 16px; color: white; }
+        .batch-dates { font-size: 13px; color: #aaa; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .batch-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+        .batch-qty { font-size: 20px; font-weight: bold; }
+        .btn-minus { background-color: #333; color: white; border: 1px solid #555; padding: 10px 20px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
+        .btn-minus:active { background-color: var(--primary-red); border-color: var(--primary-red); }
+        .btn-delete { background-color: transparent; color: #ffcccc; border: none; font-size: 13px; text-decoration: underline; cursor: pointer; padding: 0; }
+
+        #db-status-lote, #db-status-estoque { text-align: center; color: var(--primary-red); font-size: 14px; margin-bottom: 10px; height: 20px;}
     </style>
 </head>
 <body>
@@ -184,7 +142,8 @@
                     <button class="menu-btn" onclick="changeView('manual')">📖 Manual do Bar</button>
                     <button class="menu-btn" onclick="changeView('recipes')">🍹 Receitas</button>
                     <button class="menu-btn" onclick="changeView('preps')">🥣 Preparos do Bar</button>
-                    <button class="menu-btn" onclick="changeView('shopping')">📦 Estoque / Compras</button>
+                    <button class="menu-btn" onclick="changeView('prep-control')">📅 Lotes e Validade</button>
+                    <button class="menu-btn" onclick="changeView('shopping')">📦 Estoque do Bar</button>
                     <button class="menu-btn" onclick="changeView('calculator')">🍋 Super Suco</button>
                     <button class="menu-btn" onclick="changeView('batch')">🧪 Pré-Batch Drinks</button>
                 </div>
@@ -268,7 +227,6 @@
                 <p>Calculadora de rendimento e receitas base</p>
             </div>
 
-            <!-- Selector de Preparos -->
             <div class="input-group">
                 <label for="prep-selector">Selecione o preparo:</label>
                 <select id="prep-selector" onchange="changePrepView()">
@@ -280,10 +238,9 @@
                 </select>
             </div>
 
-            <!-- Xarope de Baunilha -->
             <div id="prep-bau" class="calculator-card prep-card active">
                 <h2>Xarope de Baunilha</h2>
-                <p class="obs">Bater o xarope normal no liquidificador, desligar e adicionar a baunilha.</p>
+                <p class="obs">Bater no liquidificador, desligar e adicionar baunilha.</p>
                 <div class="input-group">
                     <label>Água base (ml)</label>
                     <input type="number" id="prep-bau-agua" value="200" min="0" oninput="calcBaunilha()">
@@ -294,7 +251,6 @@
                 </div>
             </div>
 
-            <!-- Espuma de Baunilha -->
             <div id="prep-esp" class="calculator-card prep-card">
                 <h2>Espuma de Baunilha</h2>
                 <p class="obs">Sifão: Juntar tudo, chacoalhar, por gás, geladeira 2h. Guardar deitado.</p>
@@ -304,12 +260,11 @@
                 </div>
                 <div class="results-grid">
                     <div class="result-box"><div class="result-title">Água</div><div class="result-value"><span id="res-esp-agu">250</span> ml</div></div>
-                    <div class="result-box"><div class="result-title">Emulsificante</div><div class="result-value"><span id="res-esp-emu">3</span> colh</div></div>
+                    <div class="result-box"><div class="result-title">Emul.</div><div class="result-value"><span id="res-esp-emu">3</span> colh</div></div>
                     <div class="result-box"><div class="result-title">Sal</div><div class="result-value"><span id="res-esp-sal">1</span> pit.</div></div>
                 </div>
             </div>
 
-            <!-- Xarope de Morango -->
             <div id="prep-mor" class="calculator-card prep-card">
                 <h2>Xarope de Morango</h2>
                 <div class="input-group">
@@ -322,7 +277,6 @@
                 </div>
             </div>
 
-            <!-- Xarope de Missô -->
             <div id="prep-mis" class="calculator-card prep-card">
                 <h2>Xarope de Missô</h2>
                 <div class="input-group">
@@ -336,7 +290,6 @@
                 </div>
             </div>
 
-            <!-- Cachaça com Azeite -->
             <div id="prep-cac" class="calculator-card prep-card">
                 <h2>Cachaça Infusionada</h2>
                 <p class="obs">Misturar bem e congelar deitado no freezer para separar.</p>
@@ -348,20 +301,71 @@
                     <div class="result-box"><div class="result-title">Azeite</div><div class="result-value"><span id="res-cac-aze">250</span> ml</div></div>
                 </div>
             </div>
-
         </div>
 
-        <!-- 4. ABA ESTOQUE / LISTA DE COMPRAS -->
+        <!-- 4. ABA CONTROLE DE LOTES E VALIDADE (DB) -->
+        <div id="view-prep-control" class="view">
+            <div class="page-header">
+                <h2>Controle de Lotes</h2>
+                <p>Gerencie as validades (DB Online)</p>
+            </div>
+            
+            <div id="db-status-lote"></div>
+
+            <div class="calculator-card">
+                <h2>Registrar Novo Lote</h2>
+                <div class="input-group">
+                    <label>Preparo / Drink Batch</label>
+                    <select id="lote-nome">
+                        <option value="Super Suco Siciliano">Super Suco Siciliano</option>
+                        <option value="Super Suco Taiti">Super Suco Taiti</option>
+                        <option value="Saladinha (Batch)">Saladinha (Batch)</option>
+                        <option value="Cynar Sour (Batch)">Cynar Sour (Batch)</option>
+                        <option value="Velvet (Batch)">Velvet (Batch)</option>
+                        <option value="Tinto de Verão (Batch)">Tinto de Verão (Batch)</option>
+                        <option value="La Isla Bonita (Batch)">La Isla Bonita (Batch)</option>
+                        <option value="Xarope de Baunilha">Xarope de Baunilha</option>
+                        <option value="Espuma de Baunilha">Espuma de Baunilha</option>
+                        <option value="Xarope de Morango">Xarope de Morango</option>
+                        <option value="Xarope de Missô">Xarope de Missô</option>
+                        <option value="Cachaça com Azeite">Cachaça com Azeite</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Quantidade (Garrafas/Potes)</label>
+                    <input type="number" id="lote-qtd" placeholder="Ex: 6" min="1">
+                </div>
+                <div class="results-grid">
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Fabricação</label>
+                        <input type="date" id="lote-fab">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Validade</label>
+                        <input type="date" id="lote-val">
+                    </div>
+                </div>
+                <button class="btn-action" style="margin-top: 15px; margin-bottom: 0;" onclick="adicionarLoteDB()">➕ Salvar Lote (Online)</button>
+            </div>
+
+            <h2 class="category-title">Lotes Ativos</h2>
+            <div id="lotes-container"></div>
+        </div>
+
+        <!-- 5. ABA ESTOQUE / LISTA DE COMPRAS (DB) -->
         <div id="view-shopping" class="view">
             <div class="page-header">
                 <h2>Controle de Estoque</h2>
-                <p>Preencha a Qtd (0 vai pra lista). Marque "Pedir" para repor.</p>
+                <p>Alterações são salvas em tempo real no banco.</p>
             </div>
+            
+            <div id="db-status-estoque"></div>
+
             <div class="checklist-container" id="checklist"></div>
-            <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Estoque/Compras</button>
+            <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Relatório WhatsApp</button>
         </div>
 
-        <!-- 5. ABA DE CALCULADORA SUPER SUCO -->
+        <!-- 6. ABA DE CALCULADORA SUPER SUCO -->
         <div id="view-calculator" class="view">
             <div class="calculator-card">
                 <h2>Super Suco</h2>
@@ -384,7 +388,7 @@
             </div>
         </div>
 
-        <!-- 6. ABA DE PRÉ-BATCH -->
+        <!-- 7. ABA DE PRÉ-BATCH -->
         <div id="view-batch" class="view">
             <div class="calculator-card">
                 <h2>Pré-Batch Drinks</h2>
@@ -402,11 +406,7 @@
                     <label for="batch-volume">Volume total desejado (ml)</label>
                     <input type="number" id="batch-volume" placeholder="Ex: 1000 para 1 Litro" min="0" oninput="calculateBatch()">
                 </div>
-                
-                <!-- Resultados Dinâmicos -->
-                <div class="results-grid full" id="batch-results-container">
-                    <!-- Gerado pelo JS -->
-                </div>
+                <div class="results-grid full" id="batch-results-container"></div>
             </div>
         </div>
 
@@ -420,47 +420,218 @@
 
     <!-- SCRIPTS -->
     <script>
+        // ==========================================
+        // INTEGRAÇÃO COM SUPABASE
+        // ==========================================
+        const supabaseUrl = 'https://tszogflpkxloghszboiu.supabase.co';
+        const supabaseKey = 'sb_publishable_wXTAUM1ilE-Vv_Ps5GzLjQ_7PYGhTM7';
+        
+        const sb = window.supabase.createClient(supabaseUrl, supabaseKey);
+
         // --- NAVEGAÇÃO PRINCIPAL ---
-        const viewOrder = ['home', 'manual', 'recipes', 'preps', 'shopping', 'calculator', 'batch'];
+        const viewOrder = ['home', 'manual', 'recipes', 'preps', 'prep-control', 'shopping', 'calculator', 'batch'];
         let currentViewIndex = 0;
 
         function changeView(viewId) {
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
             document.getElementById('view-' + viewId).classList.add('active');
             window.scrollTo(0, 0);
-
             currentViewIndex = viewOrder.indexOf(viewId);
             const bottomBar = document.getElementById('bottom-bar');
             const btnNext = document.getElementById('btn-next');
-
             if (viewId === 'home') {
                 bottomBar.style.display = 'none';
             } else {
                 bottomBar.style.display = 'flex';
                 if (currentViewIndex === viewOrder.length - 1) {
-                    btnNext.disabled = true;
-                    btnNext.textContent = "Fim ✅";
+                    btnNext.disabled = true; btnNext.textContent = "Fim ✅";
                 } else {
-                    btnNext.disabled = false;
-                    btnNext.textContent = "Próximo ➡️";
+                    btnNext.disabled = false; btnNext.textContent = "Próximo ➡️";
                 }
             }
+
+            if (viewId === 'prep-control') carregarLotesDB();
+            if (viewId === 'shopping') carregarEstoqueDB();
         }
 
-        function goNext() {
-            if (currentViewIndex < viewOrder.length - 1) {
-                changeView(viewOrder[currentViewIndex + 1]);
+        function goNext() { if (currentViewIndex < viewOrder.length - 1) changeView(viewOrder[currentViewIndex + 1]); }
+
+        // --- CONTROLE DE LOTES E VALIDADE (ONLINE) ---
+        let lotesGlobais = [];
+
+        function formatarData(dataISO) {
+            if(!dataISO) return '--/--';
+            const partes = dataISO.split('-');
+            return `${partes[2]}/${partes[1]}`;
+        }
+
+        async function carregarLotesDB() {
+            document.getElementById('db-status-lote').textContent = "Sincronizando com Supabase...";
+            const { data, error } = await sb.from('lotes').select('*').order('created_at', { ascending: true });
+            document.getElementById('db-status-lote').textContent = "";
+            if (data) {
+                lotesGlobais = data;
+                renderLotesUI();
+            } else if(error) { console.error(error); }
+        }
+
+        function renderLotesUI() {
+            const container = document.getElementById('lotes-container');
+            container.innerHTML = '';
+            if(lotesGlobais.length === 0) {
+                container.innerHTML = '<p style="color: #aaa; text-align: center; font-style: italic;">Nenhum lote registrado.</p>';
+                return;
+            }
+            lotesGlobais.forEach((lote, index) => {
+                const div = document.createElement('div');
+                div.className = 'batch-card';
+                div.innerHTML = `
+                    <div class="batch-header">
+                        <span>${lote.nome}</span>
+                        <button class="btn-delete" onclick="deletarLoteDB(${lote.id}, ${index})">Excluir</button>
+                    </div>
+                    <div class="batch-dates">
+                        Fab: <strong>${formatarData(lote.fab)}</strong> &nbsp;|&nbsp; Val: <strong style="color: #ffcccc;">${formatarData(lote.val)}</strong>
+                    </div>
+                    <div class="batch-controls">
+                        <span class="batch-qty">${lote.qtd} un.</span>
+                        <button class="btn-minus" onclick="diminuirLoteDB(${lote.id}, ${lote.qtd}, ${index})">Baixa (- 1)</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        async function adicionarLoteDB() {
+            const nome = document.getElementById('lote-nome').value;
+            const qtd = parseInt(document.getElementById('lote-qtd').value);
+            const fab = document.getElementById('lote-fab').value;
+            const val = document.getElementById('lote-val').value;
+
+            if(!qtd || !fab || !val) { alert("Preencha todas as datas e quantidades!"); return; }
+
+            const { data, error } = await sb.from('lotes').insert([{ nome, qtd, fab, val }]).select();
+            if(!error && data) {
+                lotesGlobais.push(data[0]);
+                renderLotesUI();
+                document.getElementById('lote-qtd').value = '';
+                alert('Lote salvo no banco!');
             }
         }
 
-        // --- NAVEGAÇÃO DOS PREPAROS (Dropdown) ---
+        async function diminuirLoteDB(id, currentQtd, indexNaTela) {
+            const novaQtd = currentQtd - 1;
+            if(novaQtd <= 0) {
+                await sb.from('lotes').delete().eq('id', id);
+                lotesGlobais.splice(indexNaTela, 1);
+                alert('Garrafa finalizada! Lote removido.');
+            } else {
+                await sb.from('lotes').update({ qtd: novaQtd }).eq('id', id);
+                lotesGlobais[indexNaTela].qtd = novaQtd;
+            }
+            renderLotesUI();
+        }
+
+        async function deletarLoteDB(id, indexNaTela) {
+            if(confirm("Excluir este lote?")) {
+                await sb.from('lotes').delete().eq('id', id);
+                lotesGlobais.splice(indexNaTela, 1);
+                renderLotesUI();
+            }
+        }
+
+        // --- ESTOQUE ONLINE (DB) ---
+        const itemsEstoque = [
+            "Afiador de faca", "Água", "Água com gás", "Água Tônica", "Álcool", "Álcool 70%",
+            "Alecrim", "Amora congelada", "Azeite", "Açúcar", "Açúcar mascavo", "Balde", "Baunilha", "Bobina", "Bourbon", 
+            "Café", "Campari", "Canela", "Canelinha", "Cerveja", "Cerveja zero", "Coco tostado", "Copo americano", 
+            "Copo americano grande", "Copo baixo", "Copo de dose", "Copo plástico", "Coqueteleira", 
+            "Cravo", "Cynar", "Cândida", "Desinfetante", "Detergente", "Emulsificante", "Essência de baunilha", 
+            "Faca", "Filtro de papel", "Gabriela", "Gelo", "Gengibre", "Gin", "Guardanapo", 
+            "Hibisco", "Hortelã", "Interfolha", "Jambu", "Kariri", "Laranja", "Limão Cravo", 
+            "Limão Siciliano", "Limão Taiti", "Malibu", "Maracujá", "Mate", "Maçã", "Mel", "Missô", "Molho de romã", 
+            "Morango congelado", "Noz pecã", "Palito de kariri", "Palito pequeno", "Pano de balcão", 
+            "Pano de chão", "Papel higiênico", "Peneira", "Perflex", "Rapadura", "Red Bull", 
+            "Refrigerante", "Rum", "Rum Ouro", "Sakê", "Sal", "Salinas", "Seleta", "Soda", "Strainer", "Triple Sec", "Tábua", "Velho Barreiro", 
+            "Vinho", "Vodka", "Xarope de abacaxi", "Xarope de morango", "Xarope de romã", "Ácido cítrico", "Ácido málico"
+        ];
+        itemsEstoque.sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
+        function initEstoqueUI() {
+            const container = document.getElementById('checklist');
+            itemsEstoque.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'inventory-item';
+                div.innerHTML = `
+                    <div class="item-name">${item}</div>
+                    <div class="item-controls">
+                        <input type="number" id="qty-${index}" class="qty-input" placeholder="Qtd" min="0" onblur="salvarItemEstoqueDB('${item}', this.value, document.getElementById('order-${index}').checked)">
+                        <label class="order-toggle">
+                            <input type="checkbox" id="order-${index}" onchange="salvarItemEstoqueDB('${item}', document.getElementById('qty-${index}').value, this.checked)">
+                            Pedir
+                        </label>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+        initEstoqueUI();
+
+        async function carregarEstoqueDB() {
+            document.getElementById('db-status-estoque').textContent = "Puxando dados do Supabase...";
+            const { data, error } = await sb.from('estoque').select('*');
+            document.getElementById('db-status-estoque').textContent = "";
+            if (data) {
+                data.forEach(row => {
+                    const index = itemsEstoque.indexOf(row.item);
+                    if (index !== -1) {
+                        const qtyInput = document.getElementById(`qty-${index}`);
+                        const orderCheck = document.getElementById(`order-${index}`);
+                        if (row.qtd !== null) qtyInput.value = row.qtd;
+                        if (row.pedir !== null) orderCheck.checked = row.pedir;
+                    }
+                });
+            }
+        }
+
+        async function salvarItemEstoqueDB(nomeItem, qtdVal, pedirVal) {
+            let qtdFinal = qtdVal === "" ? null : parseFloat(qtdVal);
+            await sb.from('estoque').upsert({ item: nomeItem, qtd: qtdFinal, pedir: pedirVal });
+        }
+
+        function copyShoppingList() {
+            let stockText = "📦 *Estoque Atual:*\n";
+            let orderText = "🛒 *Lista de Compras:*\n";
+            let hasStock = false;
+            let hasOrder = false;
+
+            itemsEstoque.forEach((item, index) => {
+                const qtyInput = document.getElementById(`qty-${index}`).value;
+                const orderChecked = document.getElementById(`order-${index}`).checked;
+                if (qtyInput !== "" || orderChecked) {
+                    const qty = qtyInput === "" ? null : parseFloat(qtyInput);
+                    if (qty !== null && qty > 0) { stockText += `- ${item}: ${qty}\n`; hasStock = true; }
+                    if (qty === 0 || orderChecked) { orderText += `- ${item}\n`; hasOrder = true; }
+                }
+            });
+
+            if (!hasStock && !hasOrder) { alert('Nada preenchido!'); return; }
+            let finalText = "";
+            if (hasStock) finalText += stockText + "\n";
+            if (hasOrder) finalText += orderText;
+
+            navigator.clipboard.writeText(finalText).then(() => {
+                alert('Relatório gerado!');
+            }).catch(err => alert('Erro ao copiar.'));
+        }
+
+        // --- PREPAROS DO BAR (Visual) ---
         function changePrepView() {
             const selected = document.getElementById('prep-selector').value;
             document.querySelectorAll('.prep-card').forEach(el => el.classList.remove('active'));
             document.getElementById('prep-' + selected).classList.add('active');
         }
 
-        // --- PREPAROS DO BAR (Cálculos) ---
         function calcBaunilha() {
             const v = parseFloat(document.getElementById('prep-bau-agua').value) || 0;
             document.getElementById('res-bau-acu').textContent = Math.round(v * 1);
@@ -488,18 +659,14 @@
             document.getElementById('res-cac-aze').textContent = Math.round(v * 0.5);
         }
 
-        // --- Super Suco ---
+        // --- Super Suco e Batch Dinâmico ---
         function calculateSuperJuice() {
             const weight = parseFloat(document.getElementById('peel-weight').value) || 0;
             const type = document.getElementById('lemon-type').value;
             let citric = 0, malic = 0, water = 0;
-
             if (weight > 0) {
-                if (type === 'taiti') {
-                    citric = weight * 0.6666; malic = weight * 0.3333; water = weight * 16.66;
-                } else if (type === 'siciliano') {
-                    citric = weight * 1.0; malic = 0; water = weight * 16.66;
-                }
+                if (type === 'taiti') { citric = weight * 0.6666; malic = weight * 0.3333; water = weight * 16.66; }
+                else if (type === 'siciliano') { citric = weight * 1.0; malic = 0; water = weight * 16.66; }
             }
             document.getElementById('citric-res').textContent = citric.toFixed(2);
             document.getElementById('malic-res').textContent = malic.toFixed(2);
@@ -508,7 +675,6 @@
         document.getElementById('peel-weight').addEventListener('input', calculateSuperJuice);
         document.getElementById('lemon-type').addEventListener('change', calculateSuperJuice);
 
-        // --- Pré-Batch Dinâmico (Arredondado para múltiplos de 5) ---
         const batchRecipes = {
             cynar_cachaca: { total: 125, ing: { "Cynar": 50, "Cachaça": 50, "Mel": 25 } },
             saladinha: { total: 140, ing: { "Cachaça c/ Azeite": 50, "Xpe Missô c/ Maracujá": 50, "Limão Taiti": 20, "Açúcar": 10, "Água (Diluição)": 10 } },
@@ -522,94 +688,13 @@
             const drinkId = document.getElementById('batch-drink').value;
             const container = document.getElementById('batch-results-container');
             container.innerHTML = ''; 
-
             if (vol > 0 && batchRecipes[drinkId]) {
                 const recipe = batchRecipes[drinkId];
                 for (const [name, amount] of Object.entries(recipe.ing)) {
-                    const proportion = amount / recipe.total;
-                    const rawAmount = vol * proportion;
-                    
-                    // ARREDONDAMENTO PARA MÚLTIPLOS DE 5 OU 0
-                    const finalAmount = Math.round(rawAmount / 5) * 5;
-                    
-                    container.innerHTML += `
-                        <div class="result-box">
-                            <div class="result-title">${name}</div>
-                            <div class="result-value"><span>${finalAmount}</span> ml</div>
-                        </div>
-                    `;
+                    const finalAmount = Math.round((vol * (amount / recipe.total)) / 5) * 5;
+                    container.innerHTML += `<div class="result-box"><div class="result-title">${name}</div><div class="result-value"><span>${finalAmount}</span> ml</div></div>`;
                 }
             }
-        }
-
-        // --- Estoque / Lista de Compras ---
-        const items = [
-            "Afiador de faca", "Água", "Água com gás", "Água Tônica", "Álcool", "Álcool 70%",
-            "Alecrim", "Amora congelada", "Azeite", "Açúcar", "Açúcar mascavo", "Balde", "Baunilha", "Bobina", "Bourbon", 
-            "Café", "Campari", "Canela", "Canelinha", "Cerveja", "Cerveja zero", "Coco tostado", "Copo americano", 
-            "Copo americano grande", "Copo baixo", "Copo de dose", "Copo plástico", "Coqueteleira", 
-            "Cravo", "Cynar", "Cândida", "Desinfetante", "Detergente", "Emulsificante", "Essência de baunilha", 
-            "Faca", "Filtro de papel", "Gabriela", "Gelo", "Gengibre", "Gin", "Guardanapo", 
-            "Hibisco", "Hortelã", "Interfolha", "Jambu", "Kariri", "Laranja", "Limão Cravo", 
-            "Limão Siciliano", "Limão Taiti", "Malibu", "Maracujá", "Mate", "Maçã", "Mel", "Missô", "Molho de romã", 
-            "Morango congelado", "Noz pecã", "Palito de kariri", "Palito pequeno", "Pano de balcão", 
-            "Pano de chão", "Papel higiênico", "Peneira", "Perflex", "Rapadura", "Red Bull", 
-            "Refrigerante", "Rum", "Rum Ouro", "Sakê", "Sal", "Salinas", "Seleta", "Soda", "Strainer", "Triple Sec", "Tábua", "Velho Barreiro", 
-            "Vinho", "Vodka", "Xarope de abacaxi", "Xarope de morango", "Xarope de romã", "Ácido cítrico", "Ácido málico"
-        ];
-
-        items.sort((a, b) => a.localeCompare(b, 'pt-BR'));
-        const checklistContainer = document.getElementById('checklist');
-
-        items.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'inventory-item';
-            div.innerHTML = `
-                <div class="item-name">${item}</div>
-                <div class="item-controls">
-                    <input type="number" id="qty-${index}" class="qty-input" placeholder="Qtd" min="0">
-                    <label class="order-toggle">
-                        <input type="checkbox" id="order-${index}">
-                        Pedir
-                    </label>
-                </div>
-            `;
-            checklistContainer.appendChild(div);
-        });
-
-        function copyShoppingList() {
-            let stockText = "📦 *Estoque Atual:*\n";
-            let orderText = "🛒 *Lista de Compras:*\n";
-            let hasStock = false;
-            let hasOrder = false;
-
-            items.forEach((item, index) => {
-                const qtyInput = document.getElementById(`qty-${index}`).value;
-                const orderChecked = document.getElementById(`order-${index}`).checked;
-                
-                if (qtyInput !== "" || orderChecked) {
-                    const qty = qtyInput === "" ? null : parseFloat(qtyInput);
-                    if (qty !== null && qty > 0) { stockText += `- ${item}: ${qty}\n`; hasStock = true; }
-                    if (qty === 0 || orderChecked) { orderText += `- ${item}\n`; hasOrder = true; }
-                }
-            });
-
-            if (!hasStock && !hasOrder) {
-                alert('Você não preencheu nenhuma quantidade nem marcou nenhum item!');
-                return;
-            }
-
-            let finalText = "";
-            if (hasStock) finalText += stockText + "\n";
-            if (hasOrder) finalText += orderText;
-
-            navigator.clipboard.writeText(finalText).then(() => {
-                alert('Relatório copiado com sucesso! É só colar no WhatsApp.');
-                items.forEach((_, index) => {
-                    document.getElementById(`qty-${index}`).value = "";
-                    document.getElementById(`order-${index}`).checked = false;
-                });
-            }).catch(err => alert('Erro ao copiar. O seu navegador pode não suportar essa função.'));
         }
     </script>
 </body>
