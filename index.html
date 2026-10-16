@@ -113,7 +113,47 @@
         .btn-minus:active { background-color: var(--primary-red); border-color: var(--primary-red); }
         .btn-delete { background-color: transparent; color: #ffcccc; border: none; font-size: 13px; text-decoration: underline; cursor: pointer; padding: 0; }
 
-        #db-status-lote, #db-status-estoque { text-align: center; color: var(--primary-red); font-size: 14px; margin-bottom: 10px; height: 20px;}
+        /* --- TABELA DE VISUALIZAÇÃO DE ESTOQUE --- */
+        .stock-table-container {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: var(--secondary-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .stock-table-container th, .stock-table-container td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .stock-table-container th {
+            background-color: #181818;
+            color: var(--primary-red);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stock-table-container td {
+            font-size: 15px;
+            color: #ddd;
+        }
+
+        .badge-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .badge-ok { background-color: rgba(0, 200, 83, 0.2); color: #00e676; border: 1px solid #00e676; }
+        .badge-repor { background-color: rgba(255, 0, 0, 0.2); color: #ff5252; border: 1px solid #ff5252; }
+
+        #db-status-lote, #db-status-estoque, #db-status-tabela { text-align: center; color: var(--primary-red); font-size: 14px; margin-bottom: 10px; height: 20px;}
     </style>
 </head>
 <body>
@@ -142,8 +182,9 @@
                     <button class="menu-btn" onclick="changeView('manual')">📖 Manual do Bar</button>
                     <button class="menu-btn" onclick="changeView('recipes')">🍹 Receitas</button>
                     <button class="menu-btn" onclick="changeView('preps')">🥣 Preparos do Bar</button>
-                    <button class="menu-btn" onclick="changeView('prep-control')">📅 Lotes e Validade</button>
-                    <button class="menu-btn" onclick="changeView('shopping')">📦 Estoque do Bar</button>
+                    <button class="menu-btn" onclick="changeView('prep-control')">🏷️ Controle de Insumos</button>
+                    <button class="menu-btn" onclick="changeView('stock-table')">📊 Tabela de Estoque</button>
+                    <button class="menu-btn" onclick="changeView('shopping')">📦 Contagem & Pedidos</button>
                     <button class="menu-btn" onclick="changeView('calculator')">🍋 Super Suco</button>
                     <button class="menu-btn" onclick="changeView('batch')">🧪 Pré-Batch Drinks</button>
                 </div>
@@ -303,19 +344,19 @@
             </div>
         </div>
 
-        <!-- 4. ABA CONTROLE DE LOTES E VALIDADE (DB) -->
+        <!-- 4. ABA CONTROLE DE INSUMOS E VALIDADE (DB) -->
         <div id="view-prep-control" class="view">
             <div class="page-header">
-                <h2>Controle de Lotes</h2>
-                <p>Gerencie as validades (DB Online)</p>
+                <h2>Controle de Insumos</h2>
+                <p>Controle de quantidade de insumos e validade (não esquecer de etiquetar)</p>
             </div>
             
             <div id="db-status-lote"></div>
 
             <div class="calculator-card">
-                <h2>Registrar Novo Lote</h2>
+                <h2>Cadastro de Insumo</h2>
                 <div class="input-group">
-                    <label>Preparo / Drink Batch</label>
+                    <label>Insumo / Drink Batch</label>
                     <select id="lote-nome">
                         <option value="Super Suco Siciliano">Super Suco Siciliano</option>
                         <option value="Super Suco Taiti">Super Suco Taiti</option>
@@ -345,18 +386,45 @@
                         <input type="date" id="lote-val">
                     </div>
                 </div>
-                <button class="btn-action" style="margin-top: 15px; margin-bottom: 0;" onclick="adicionarLoteDB()">➕ Salvar Lote (Online)</button>
+                <button class="btn-action" style="margin-top: 15px; margin-bottom: 0;" onclick="adicionarLoteDB()">➕ Salvar Insumo</button>
             </div>
 
-            <h2 class="category-title">Lotes Ativos</h2>
+            <h2 class="category-title">Insumos Ativos</h2>
             <div id="lotes-container"></div>
         </div>
 
-        <!-- 5. ABA ESTOQUE / LISTA DE COMPRAS (DB) -->
+        <!-- 5. ABA TABELA DE VISUALIZAÇÃO DE ESTOQUE (NOVA) -->
+        <div id="view-stock-table" class="view">
+            <div class="page-header">
+                <h2>Tabela de Estoque</h2>
+                <p>Consulta rápida de saldo em tempo real durante o serviço.</p>
+            </div>
+            
+            <div id="db-status-tabela"></div>
+
+            <div class="input-group">
+                <input type="text" id="search-stock-input" placeholder="🔍 Buscar item (ex: Vodka, Gelo, Copo)..." onkeyup="filtrarTabelaEstoque()">
+            </div>
+
+            <table class="stock-table-container">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th style="text-align: center;">Qtd</th>
+                        <th style="text-align: center;">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="stock-table-body">
+                    <!-- Linhas geradas via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 6. ABA CONTAGEM & PEDIDOS (DB) -->
         <div id="view-shopping" class="view">
             <div class="page-header">
-                <h2>Controle de Estoque</h2>
-                <p>Alterações são salvas em tempo real no banco.</p>
+                <h2>Contagem & Pedidos</h2>
+                <p>Atualize os saldos no fechamento e marque os itens para a lista do WhatsApp.</p>
             </div>
             
             <div id="db-status-estoque"></div>
@@ -365,7 +433,7 @@
             <button class="btn-action" onclick="copyShoppingList()">📋 Gerar Relatório WhatsApp</button>
         </div>
 
-        <!-- 6. ABA DE CALCULADORA SUPER SUCO -->
+        <!-- 7. ABA DE CALCULADORA SUPER SUCO -->
         <div id="view-calculator" class="view">
             <div class="calculator-card">
                 <h2>Super Suco</h2>
@@ -388,7 +456,7 @@
             </div>
         </div>
 
-        <!-- 7. ABA DE PRÉ-BATCH -->
+        <!-- 8. ABA DE PRÉ-BATCH -->
         <div id="view-batch" class="view">
             <div class="calculator-card">
                 <h2>Pré-Batch Drinks</h2>
@@ -429,7 +497,7 @@
         const sb = window.supabase.createClient(supabaseUrl, supabaseKey);
 
         // --- NAVEGAÇÃO PRINCIPAL ---
-        const viewOrder = ['home', 'manual', 'recipes', 'preps', 'prep-control', 'shopping', 'calculator', 'batch'];
+        const viewOrder = ['home', 'manual', 'recipes', 'preps', 'prep-control', 'stock-table', 'shopping', 'calculator', 'batch'];
         let currentViewIndex = 0;
 
         function changeView(viewId) {
@@ -451,12 +519,13 @@
             }
 
             if (viewId === 'prep-control') carregarLotesDB();
+            if (viewId === 'stock-table') carregarTabelaEstoqueDB();
             if (viewId === 'shopping') carregarEstoqueDB();
         }
 
         function goNext() { if (currentViewIndex < viewOrder.length - 1) changeView(viewOrder[currentViewIndex + 1]); }
 
-        // --- CONTROLE DE LOTES E VALIDADE (ONLINE) ---
+        // --- CONTROLE DE INSUMOS E VALIDADE (ONLINE) ---
         let lotesGlobais = [];
 
         function formatarData(dataISO) {
@@ -479,7 +548,7 @@
             const container = document.getElementById('lotes-container');
             container.innerHTML = '';
             if(lotesGlobais.length === 0) {
-                container.innerHTML = '<p style="color: #aaa; text-align: center; font-style: italic;">Nenhum lote registrado.</p>';
+                container.innerHTML = '<p style="color: #aaa; text-align: center; font-style: italic;">Nenhum insumo registrado.</p>';
                 return;
             }
             lotesGlobais.forEach((lote, index) => {
@@ -508,14 +577,14 @@
             const fab = document.getElementById('lote-fab').value;
             const val = document.getElementById('lote-val').value;
 
-            if(!qtd || !fab || !val) { alert("Preencha todas as datas e quantidades!"); return; }
+            if(!qtd || !fab || !val) { alert("Preencha a quantidade e as datas de fabricação e validade!"); return; }
 
             const { data, error } = await sb.from('lotes').insert([{ nome, qtd, fab, val }]).select();
             if(!error && data) {
                 lotesGlobais.push(data[0]);
                 renderLotesUI();
                 document.getElementById('lote-qtd').value = '';
-                alert('Lote salvo no banco!');
+                alert('Insumo salvo no banco!');
             }
         }
 
@@ -524,7 +593,7 @@
             if(novaQtd <= 0) {
                 await sb.from('lotes').delete().eq('id', id);
                 lotesGlobais.splice(indexNaTela, 1);
-                alert('Garrafa finalizada! Lote removido.');
+                alert('Insumo finalizado! Removido da lista.');
             } else {
                 await sb.from('lotes').update({ qtd: novaQtd }).eq('id', id);
                 lotesGlobais[indexNaTela].qtd = novaQtd;
@@ -533,14 +602,14 @@
         }
 
         async function deletarLoteDB(id, indexNaTela) {
-            if(confirm("Excluir este lote?")) {
+            if(confirm("Excluir este insumo?")) {
                 await sb.from('lotes').delete().eq('id', id);
                 lotesGlobais.splice(indexNaTela, 1);
                 renderLotesUI();
             }
         }
 
-        // --- ESTOQUE ONLINE (DB) ---
+        // --- ESTOQUE GERAL DO BAR ONLINE (DB) ---
         const itemsEstoque = [
             "Afiador de faca", "Água", "Água com gás", "Água Tônica", "Álcool", "Álcool 70%",
             "Alecrim", "Amora congelada", "Azeite", "Açúcar", "Açúcar mascavo", "Balde", "Baunilha", "Bobina", "Bourbon", 
@@ -594,14 +663,68 @@
             }
         }
 
+        // --- CONSULTA EM TABELA DO ESTOQUE ---
+        let dadosEstoqueCompleto = [];
+
+        async function carregarTabelaEstoqueDB() {
+            document.getElementById('db-status-tabela').textContent = "Atualizando tabela...";
+            const { data, error } = await sb.from('estoque').select('*');
+            document.getElementById('db-status-tabela').textContent = "";
+            if (data) {
+                dadosEstoqueCompleto = data;
+            } else {
+                dadosEstoqueCompleto = [];
+            }
+            renderTabelaEstoque(dadosEstoqueCompleto);
+        }
+
+        function renderTabelaEstoque(dados) {
+            const tbody = document.getElementById('stock-table-body');
+            tbody.innerHTML = '';
+
+            itemsEstoque.forEach(itemNome => {
+                const encontrado = dados.find(d => d.item === itemNome);
+                const qtd = (encontrado && encontrado.qtd !== null) ? encontrado.qtd : '-';
+                const pedir = (encontrado && encontrado.pedir) ? true : false;
+
+                let statusBadge = `<span class="badge-status badge-ok">OK</span>`;
+                if (pedir || qtd === 0 || qtd === '0') {
+                    statusBadge = `<span class="badge-status badge-repor">REPOR</span>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "stock-tr-item";
+                tr.setAttribute('data-name', itemNome.toLowerCase());
+                tr.innerHTML = `
+                    <td><strong>${itemNome}</strong></td>
+                    <td style="text-align: center; font-weight: bold; font-size: 16px;">${qtd}</td>
+                    <td style="text-align: center;">${statusBadge}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filtrarTabelaEstoque() {
+            const termo = document.getElementById('search-stock-input').value.toLowerCase();
+            const linhas = document.querySelectorAll('.stock-tr-item');
+            linhas.forEach(tr => {
+                const nome = tr.getAttribute('data-name');
+                if (nome.includes(termo)) {
+                    tr.style.display = '';
+                } else {
+                    tr.style.display = 'none';
+                }
+            });
+        }
+
         async function salvarItemEstoqueDB(nomeItem, qtdVal, pedirVal) {
             let qtdFinal = qtdVal === "" ? null : parseFloat(qtdVal);
             await sb.from('estoque').upsert({ item: nomeItem, qtd: qtdFinal, pedir: pedirVal });
         }
 
         function copyShoppingList() {
-            let stockText = "📦 *Estoque Atual:*\n";
-            let orderText = "🛒 *Lista de Compras:*\n";
+            let stockText = "📦 *Estoque Geral Atual:*\n";
+            let orderText = "🛒 *Lista de Compras / Pedidos:*\n";
             let hasStock = false;
             let hasOrder = false;
 
@@ -615,14 +738,14 @@
                 }
             });
 
-            if (!hasStock && !hasOrder) { alert('Nada preenchido!'); return; }
+            if (!hasStock && !hasOrder) { alert('Nenhum item foi preenchido!'); return; }
             let finalText = "";
             if (hasStock) finalText += stockText + "\n";
             if (hasOrder) finalText += orderText;
 
             navigator.clipboard.writeText(finalText).then(() => {
-                alert('Relatório gerado!');
-            }).catch(err => alert('Erro ao copiar.'));
+                alert('Relatório do Estoque copiado com sucesso!');
+            }).catch(err => alert('Erro ao copiar o relatório.'));
         }
 
         // --- PREPAROS DO BAR (Visual) ---
